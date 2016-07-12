@@ -27,3 +27,7 @@ recentf
 timelog
 
 .CurProjects*
+
+irony/*
+
+url/*
