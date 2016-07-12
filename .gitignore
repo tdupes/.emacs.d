@@ -16,3 +16,5 @@ auto-save-list/*
 el-get/*
 
 auto-save-list/*
+
+.cask/*
