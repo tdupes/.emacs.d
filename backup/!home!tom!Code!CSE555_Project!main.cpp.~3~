@@ -1,7 +1,0 @@
-#include <stdint.h>
-
-int main(int argc, char** argv)
-{
-		argc + 4 + "d";
-}
-

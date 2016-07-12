@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if [[ -z `xrandr | grep " connected" | grep 'DP1'` ]]; then
-	 echo SAYS CONNECTED
-else
-	echo NOT CONNECTED
-fi

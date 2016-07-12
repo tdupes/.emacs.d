@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: datarec
-# key: da
-# --
-data ${1:Type} = $1 {
-
-} deriving (Show)

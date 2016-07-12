@@ -1,9 +1,0 @@
-
-
-
-* TODO make wicd automatically connect
-* TODO  get skype and mic to work
-
-
-* Useful info
-** to enable hbogo and other DRM stuff you must start HAL (systemctl enable hal; systemctl start hal)

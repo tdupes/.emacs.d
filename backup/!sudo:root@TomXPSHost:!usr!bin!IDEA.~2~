@@ -1,5 +1,0 @@
- 
-#!/bin/sh
-export IDEA_HOME="/opt/idea-IC-117.798/bin"
- 
-$IDEA_HOME/idea.sh $*

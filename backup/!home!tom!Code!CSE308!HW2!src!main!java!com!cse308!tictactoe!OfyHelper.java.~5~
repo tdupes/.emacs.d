@@ -1,7 +1,0 @@
-package com.cse308.tictactoe;
-
-import com.googlecode.objectify.*;
-
-public class OfyHelper implements {
-		
-}

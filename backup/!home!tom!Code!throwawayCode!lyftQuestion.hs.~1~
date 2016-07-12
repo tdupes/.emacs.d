@@ -1,5 +1,0 @@
-module LyftSolutions where
-
-
-
-calcDiff ride1 ride2 = 

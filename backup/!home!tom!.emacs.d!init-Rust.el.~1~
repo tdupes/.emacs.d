@@ -1,5 +1,0 @@
-(setq racer-rust-src-path "~/Code/rust/src/")
-(setq racer-cmd "~/Code/racer/target/release/racer")
-(add-to-list 'load-path "~/Code/racer/editors")
-(eval-after-load "rust-mode"
-  '(require 'racer))

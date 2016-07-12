@@ -1,7 +1,0 @@
-* Computational Geometry
-** 4 Nails Theorem 
-Given n discs, each pair intersects, prove that you only need 4 nails to touch
-them all
-** Triangulation
-Come up with an alternate linear time algorithm to triangulate a polygon
-** 

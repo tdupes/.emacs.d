@@ -1,3 +1,0 @@
-
-
-calcMeanList = uncurry (/) . foldr (\e (s,c) -> (e+s,c+1)) (0,0)
