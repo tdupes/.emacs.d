@@ -1,0 +1,65 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 16}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+
+\noindent Recommended Reading: BCKO/BKOS: Chapter 3;
+O'Rourke, Chapters 1 and 2.
+
+
+
+\medskip
+\noindent {\bf (16).} 
+As we know, Fisk's proof method gives us a means of placing guards at
+vertices of a simple polygon.  The set of guards it produces need not
+be optimal, of course.  Further, the set of guards produced depends on
+the particular triangulation used -- some triangulations ${\cal T}$ of
+simple polygon $P$ lead to a much smaller set of guards, using the
+Fisk method, than other triangulations. (We know there can be {\em
+  lots} of different triangulations for some polygons.)
+
+Could it be that if we used the ``right'' choice of triangulation of $P$,
+the Fisk method would actually give an {\em optimal} set of vertex guards?
+Give an example of a simple polygon $P$ for which {\em every}
+triangulation of $P$ is ``bad'' in the sense that Fisk's proof method
+gives ``many more'' guards than an optimal set of vertex guards.  Try to make your
+example as ``bad'' as possible, to maximize the ratio of the number of
+guards produced by Fisk's method, on the ``best'' among all
+triangulations, to the number of guards, $g_V(P)$, in an optimal cover
+using vertex guards.
+
+\medskip
+(For extra thought/fun (optional -- not to turn in, but can be an
+optional project): Give an efficient algorithm to find the best
+triangulation of $P$, yielding the fewest vertex guards possible using
+the Fisk method.)
+
+
+
+\end{document}
+

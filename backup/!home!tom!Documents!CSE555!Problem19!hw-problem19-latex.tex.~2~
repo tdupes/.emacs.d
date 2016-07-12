@@ -1,0 +1,74 @@
+% hw set 4, 2016
+
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 19}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+
+\noindent Recommended Reading: BKOS/BCKO: Chapter 4;
+O'Rourke, Section 2.5 (Convex Partitioning)
+
+\medskip
+\noindent {\bf (19).}  
+Let $H$ be a set of at least three half-planes with a non-empty
+intersection such that not all bounding lines are parallel. We call a
+half-plane $h \in H$ {\em redundant} if it does not contribute an edge
+to $\bigcap H$.  Prove that for any redundant half-plane $h\in H$
+there are two half-planes $h', h'' \in H$ such that $h'\cap h''
+\subset h$.  Give an $O(n\log n)$ time algorithm to compute all
+redundant half-planes.
+
+\textbf{A: The proof is that for any redundant half-plane, the entire area of
+  $\bigcap H$ must lie within $h$ ($\bigcap H \subset h$). Now if we look at the
+  points within $\bigcap H$, and see the most extreme point in the direction of
+  the line perpendicular $h$. This most extreme point must either be on the
+  intersection of two supporting lines of half-planes in which case the two
+  lines are our $h'$ and $h''$ since the if $h'\cap h''$ were to not be in $h$
+  then $h$ would not be redundant. If the most extreme point only lies on one
+  bounding line, then that line of a half-plane is parallel to the bounding line
+  of $h$, in which case, that line any other bounding line of a non-redundant
+  half-plane is our $h'$ and $h''$.  \\
+  An $O(n\log n)$ algorithm would work by using the divide-and-conquer algorithm
+  and during the merge step, if an edge does not contribute to the intersection,
+  the we report the half-edge it belongs to as being redundant. This can be done
+  without adding to the running time of the merge step since we can keep track
+  of which  edges have been found to contribute as we move from edge to edge, and
+  if an edge is moved out of one of the 4 pointers without having been found to
+  contribute, we know know it is redundant. }
+
+
+\end{document}
+
+
+
+
+
+
+
+
+

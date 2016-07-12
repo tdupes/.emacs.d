@@ -1,0 +1,60 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 3}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+\noindent Recommended Reading: BCKO Chapter 1.  O'Rourke, Chapter 3. 
+
+\noindent {\bf (3).} 
+Problem 1.10, parts (a)-(d), page 17, BCKO/BKOS:
+{\em Let $S$ be a set of $n$ (possibly intersecting) unit circles in the plane. We
+want to compute the convex hull of $S$.
+
+(a). Show that the boundary of the convex hull of $S$ consists of straight
+line segments and pieces of circles in $S$.
+
+(b). Show that each circle can occur at most once on the boundary of the
+convex hull.
+
+(c). Let $S'$ be the set of points that are the centers of the circles in $S$. Show
+that a circle in $S$ appears on the boundary of the convex hull if and
+only if the center of the circle lies on the convex hull of $S'$.
+
+(d). Give an $O(n\log n)$ algorithm for computing the convex hull of $S$.}
+
+Note: Clarification of part (b): The number of times that a disk (circle) $D$
+``occurs'' on the convex hull is the number of connected components of the
+set $X\cap D$, where $X$ is the set of extreme points of the convex hull of
+the circles (and we consider each circle $D$ to be a {\em closed} region (disk).
+
+(e). [Optional]
+Show that the convex hull of $n$ spherical balls (possibly of different radii) in 3D can have boundary complexity $\Omega(n^2)$.
+In contrast, the convex hull of $n$ cubes (of any size/orientation) in 3D has boundary complexity $O(n)$; do you see why?
+
+
+\vfill
+\end{document}

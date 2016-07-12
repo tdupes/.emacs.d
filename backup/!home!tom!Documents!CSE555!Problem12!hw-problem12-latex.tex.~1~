@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 12}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+\noindent Recommended Reading: BKOS: Chapter 2; O'Rourke sections 7.7, 7.8. Handout on Melkman's algorithm.
+
+
+
+\medskip
+
+
+\medskip
+\noindent {\bf (12).} 
+Write an intersection
+predicate, {\tt TriRayIntersectProp}, in C which takes five points,
+$a$, $b$, $c$, $d$, $e$, which define a triangle, $\Delta abc$, and a ray,
+$de$ (with endpoint $d$, pointing in the direction of point $e\neq d$), and
+determines if they {\em properly} intersect or not. (In order to
+intersect properly, there must exist a point
+$p$ {\em interior} to the triangle and the ray
+(more precisely, in the ``relative interior'' of each), not on the
+boundary of the triangle or at the endpoint ($d$) of the ray.
+(Note that the triangle 
+must be nondegenerate for this to happen; i.e., if the triangle
+is degenerate (a line segment or a point), then it has no
+points in its interior); a triangle is considered to
+be the (closed) convex hull of its three vertices.)
+
+Your predicate should start:
+
+\begin{verbatim}
+bool   TriRayIntersectProp( tPointi a, tPointi b, tPointi c, 
+                            tPointi d, tPointi e )
+{
+
+[FILL IN HERE]
+
+}
+\end{verbatim}
+
+\noindent You may use the predicates from O'Rourke's book,
+{\tt Area2}, {\tt Left}, {\tt
+LeftOn}, {\tt Collinear}, {\tt IntersectProp}, {\tt Between}, and {\tt
+Intersect} from the text, but try to think carefully about making your
+code complete (handling all cases) and efficient (avoiding duplication
+of tests).
+
+{\em Note:} Even if you have never programmed in C before, this exercise should
+be fairly straightforward; try to read and understand the code fragments
+of section 1.5 of O'Rourke.
+
+
+
+
+\end{document}
+
+
+

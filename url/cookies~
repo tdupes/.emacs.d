@@ -1,0 +1,36 @@
+;; Emacs-W3 HTTP cookies file
+;; Automatically generated file!!! DO NOT EDIT!!!
+
+(setq url-cookie-storage
+ '(("blackboard.stonybrook.edu"
+  [url-cookie "session_id" "BD6B25F0D58D620F76EE9B6C64A546E5" "10-Apr-2030 17:29:10.00 GMT" "/" "blackboard.stonybrook.edu" nil]
+  [url-cookie "HttpOnly" nil "10-Apr-2030 17:29:10.00 GMT" "/" "blackboard.stonybrook.edu" nil])
+ (".youtube.com"
+  [url-cookie "VISITOR_INFO1_LIVE" "8Iy5qh4D2Yw" "21-Nov-2015 09:58:45.00 GMT" "/" ".youtube.com" nil])
+ (".facebook.com"
+  [url-cookie "httponly" nil "21-Mar-2017 22:04:38.00 GMT" "/" ".facebook.com" nil]
+  [url-cookie "datr" "djwPVTuzTb5q8J8s-vCQYQ--" "21-Mar-2017 22:04:38.00 GMT" "/" ".facebook.com" nil])
+ (".reddit.com"
+  [url-cookie "__cfduid" "d2486f72266850582600a90e50dece1361426975463" "20 Mar 16 22:04:23 [GMT]" "/" ".reddit.com" nil]
+  [url-cookie "HttpOnly" nil "20 Mar 16 22:04:23 [GMT]" "/" ".reddit.com" nil])
+ (".stackoverflow.com"
+  [url-cookie "prov" "1d7a8469-a33e-4336-ba86-5b761755d1d9" "01-Jan-2055 00:00:00.00 GMT" "/" ".stackoverflow.com" nil]
+  [url-cookie "HttpOnly" nil "01-Jan-2055 00:00:00.00 GMT" "/" ".stackoverflow.com" nil])
+ (".google.com"
+  [url-cookie "PREF" "ID=69502a4436137b4b:U=4403c9125772f585:FF=0:TM=1426798542:LM=1426798563:S=jkAD6bef3QjnhnWP" "18-Mar-2017 20:56:03.00 GMT" "/" ".google.com" nil]
+  [url-cookie "NID" "67=psB5AOuw1njtacVQXtTHVmHjpwlcCpcWYpxEP-SgkgDeVJ9BhMdh4D4wj6lN1aGjoc7q0puyOQiDlwS4fq42KSut9t6mfdO4zua-XBv01wGsulu5ZDHQv-2P2GkdKZOV" "18-Sep-2015 20:55:42.00 GMT" "/" ".google.com" nil]))
+)
+(setq url-cookie-secure-storage
+ '(("blackboard.stonybrook.edu"
+  [url-cookie "s_session_id" "122229D2948550FBEC2BE068CB49DC0D" "10-Apr-2030 17:29:10.00 GMT" "/" "blackboard.stonybrook.edu" t]
+  [url-cookie "HttpOnly" nil "10-Apr-2030 17:29:10.00 GMT" "/" "blackboard.stonybrook.edu" t])
+ (".github.com"
+  [url-cookie "dotcom_user" "ThomasDuPlessis" "21-Mar-2035 19:48:11.00 GMT" "/" ".github.com" t]
+  [url-cookie "HttpOnly" nil "05-May-2035 16:11:02.00 GMT" "/" ".github.com" t]
+  [url-cookie "logged_in" "no" "05-May-2035 16:11:02.00 GMT" "/" ".github.com" t]))
+)
+
+;; Local Variables:
+;; version-control: never
+;; no-byte-compile: t
+;; End:

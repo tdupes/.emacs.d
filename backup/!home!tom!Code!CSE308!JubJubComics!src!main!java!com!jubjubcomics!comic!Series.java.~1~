@@ -1,0 +1,6 @@
+package com.jubjubcomics.comic;
+
+
+@Entity
+public class Component implements Sociable {
+}

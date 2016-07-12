@@ -1,0 +1,6 @@
+module Network.BlockchainInfo.API where
+
+{-
+the following module makes it easy to interact with the Blockchain.info api of
+creating and using wallets
+-}

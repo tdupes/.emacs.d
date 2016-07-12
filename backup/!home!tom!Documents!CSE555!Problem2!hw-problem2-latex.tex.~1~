@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 2}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+\noindent Recommended Reading: BCKO Chapter 1.  O'Rourke, Chapter 3. 
+
+\noindent {\bf (2).} 
+Let $R$ be a set of $n_R$ ``red'' points in the plane.
+Let $B$ be a set of $n_B$ ``blue'' points in the plane.
+Suppose we know the convex hulls, $CH(R)$ and $CH(B)$, having $h_R$ and $h_B$ vertices, respectively,
+given as cyclic lists of their vertices.
+We want to compute the convex hull, $CH(R\cup B)$, of the $n=n_R+n_B$ points.
+
+(a). In terms of $h_R$ and $h_B$, what is the maximum possible number of vertices of $CH(R\cup B)$?
+What is the minimum possible number of such vertices?
+
+(b). How efficiently can we compute $CH(R\cup B)$?  Explain.
+
+(c). In class, we discussed the divide-and-conquer approach to
+computing the convex hull of a set of $n$ points in the plane. (See
+also problem 1.8, Chapter 1.)  Suppose now that the method of dividing
+is {\em not} to split according to the $x$-median, but, rather, is an
+arbitrary split of the input points $S$ into two sets, $S_1$ and
+$S_2$, of sizes $\lfloor n/2\rfloor$ and $\lceil n/2\rceil$.  Use your
+answer to part (b) to describe and analyze an algorithm to compute the
+convex hull of $n$ points in the plane.
+
+
+
+\vfill
+\end{document}

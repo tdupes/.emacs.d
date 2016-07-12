@@ -1,0 +1,21 @@
+pcm.!default {
+      type hw
+      card 1
+      device 7
+ }
+
+pcm.!default {
+    type plug
+    slave.pcm "asymed"
+}
+
+
+pcm.asymed {
+    type asym
+    playback.pcm {
+        @func getenv
+        vars [ ALSAPCM ]
+        default "dmix"
+    }
+    capture.pcm "dsnoop"
+}

@@ -1,0 +1,89 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 17}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+
+\noindent Recommended Reading: BCKO/BKOS: Chapter 3;
+O'Rourke, Chapters 1 and 2.
+
+
+
+\medskip
+\noindent {\bf (17).}  
+For each of the simple polygons $P$ below, do the following:
+
+(a). Show a set of diagonals that yield a triangulation of $P$.
+
+(b). Apply the method of Fisk's proof to obtain a set of at
+most $\lfloor n/3\rfloor$ (vertex) guards.  How many guards do you
+use?
+
+\centerline{\hfill\psfig{file=hw-problem17-polygon1.eps,height=2.0in}\hfill 
+                  \psfig{file=hw-problem17-polygon2.eps,height=2.0in}\hfill}
+
+(c). By inspection, obtain the {\em vertex} guard number
+for $P$; i.e., find the minimum number of vertex guards necessary to
+guard the polygon.  Justify your answer! In particular, give an
+argument that fewer guards cannot suffice.
+
+\centerline{\hfill\psfig{file=hw-problem17-polygon1.eps,height=2.0in}\hfill 
+                  \psfig{file=hw-problem17-polygon2.eps,height=2.0in}\hfill}
+
+(d). By inspection, obtain the {\em point} guard number for
+$P$, allowing guards to be placed at {\em any} point (interior or
+boundary) of the polygon.  Justify your answer! (Give an argument that
+fewer guards cannot suffice.)
+
+\centerline{\hfill\psfig{file=hw-problem17-polygon1.eps,height=2.0in}\hfill 
+                  \psfig{file=hw-problem17-polygon2.eps,height=2.0in}\hfill}
+
+(e). 
+Compute the
+{\em boundary guard number}, $g_{\partial P}(P)$, which is defined
+to be the minimum number of guards needed to illuminate
+all of the polygon, subject to the constraint that each guard must
+be a point on the boundary, $\partial P$, of $P$ (it can lie at a vertex or
+interior to an edge of $P$). Justify your answer! (Give an argument that
+fewer guards cannot suffice.)
+
+\centerline{\hfill\psfig{file=hw-problem17-polygon1.eps,height=2.0in}\hfill 
+                  \psfig{file=hw-problem17-polygon2.eps,height=2.0in}\hfill}
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+

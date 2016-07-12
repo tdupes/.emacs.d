@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 10}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+\noindent Recommended Reading: BKOS: Chapter 2; O'Rourke sections 7.7, 7.8. Handout on Melkman's algorithm.
+
+
+\medskip
+
+\noindent {\bf (10).}  
+Given a set $D$ of $n$ disjoint circular disks in the plane, and a set $S$ of $m$ points, 
+devise an efficient algorithm to determine how many points are in each disk.
+What is the running time (in big-Oh)?
+
+\textbf{A: This can be solved in O($(n+m)log(n)$) time by modifying the sweeping
+  line algorithm. Where instead of lines, we have discs, and instead of
+  detecting intersections between lines we detect the points in $S$ intersecting
+  the area of a disc. We will have an Event and a sweeping line data structure,
+  but because discs are disjoint, we will not need to modify the Event Data
+  structure after initialization, as the position of Discs will never switch
+  spaces in our sweeping line, they will only be added and deleted. So if we
+  imagine the sweeping line sweeps from top to bottom, we create an Event for
+  the start and end of each circle corresponding to its highest point and lowest
+  point in the plane according to y coordinate (so if a Circle has a center,
+  ($x$, $y$), and a radius $r$, we will create an event for ($x$, $y$ +$r$) and
+  ($x$, $y$ - $r$)). We will also create an event for each point in $S$ and do
+  an anti-lexicographic sort on all these events (according to Y first then
+  X). Then we have a balanced binary tree data structure for our Sweeping line
+  status that remains sorted by X value. Our procedure will entail going through
+  the Event array and for each event, we do one of three operations: }
+\begin{itemize}
+  \item if the event is the start of the Circle, we add the circle to our sweeping line 
+  \item if the Event is the end of the circle we delete the Circle, and output
+    the count of points it contains
+  \item if the event is a point, we check if its contained inside either of the
+    circles in the sweeping line data structure that have the a center with the
+    closest x value from the left and right to the point and increment a counter
+    for the circle that contains it if so.
+  \end{itemize}    
+  \textbf{ All of these operations are done in O($log(n)$) time where $n$ is the
+    size of the sweeping line data structure, which in our algorithm is $O(n)$
+    since only discs are added to the sweeping line. Since the Event array has
+    $O(n+m)$ the total runtime of the algorithm is O($(n+m)log(n)$). And a quick
+    verification that this algorithm is correct is that every point can only be
+    contained in one disc, and the circle that contains a point, $p$ must be
+    active in the sweeping line at the time of the event for$p$ since $p$ must
+    have a y coordinate less then or equal to the highest point of the circle
+    and less then or greater then the lowest point of the circle. Also, in the
+    Sweeping line, $p$ must be checked against the circle that contains it
+    because that would mean some other circle has a center with a closer
+    x-coordinate, that is active in the same y region, implying that other
+    circle intersects with the circle that contains $p$ which is ruled out for
+    this problem. }
+\begin{algorithm}
+\caption{Find points contained in each Disc}
+\begin{algorithmic}[1]
+  \Procedure{Detect-Containing-Points}{$D$, $S$}
+  \For{$p \in P$ }
+    \If{$p$.x $< minX$ }
+      \State $minX$ = $p$.x
+    \Else
+      \If{$p$.x $> maxX$}
+        \State $maxX$ = $p$.x
+      \EndIf
+    \EndIf
+    \If{$p$.y $< minY$ }
+      \State $minY$ = $p$.y
+    \Else
+      \If{$p$.y $> maxY$}
+        \State $maxY$ = $p$.y
+      \EndIf
+    \EndIf
+  \EndFor
+  \State \textbf{return} \{($minX$, $maxY$), ($maxX$, $maxY$), ($minX$, $maxY$), ($minX$, $minY$) \}
+  \EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+\end{document}
+
+
+

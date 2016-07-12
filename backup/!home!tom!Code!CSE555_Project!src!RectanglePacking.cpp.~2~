@@ -1,0 +1,76 @@
+
+#define USE_VISUALS true
+
+#include <stdlib.h>
+#include <algorithm>
+
+struct Point{
+		int X;
+		int Y;
+};
+typedef struct Point Point;
+
+
+struct Rectangle {
+
+		Point lowerLeft;
+		Point upperRight;
+
+		int area() {
+				return (upperRight.Y - lowerLeft.Y) * (upperRight.X - lowerLeft.X);
+		}
+
+		bool isValid() {
+				return lowerLeft.X <= upperRight.X && lowerLeft.Y <= upperRight.Y;
+		}
+};
+typedef struct Rectangle Rectangle;
+
+
+bool isValid(Rectangle rectangles[], size_t size);
+
+
+/**
+ * compare functions to sort points on Y  Axis
+ */
+inline bool Ycompare(Point p1, Point p2){ return p1.Y < p2.Y; }
+
+/**
+ * compare functions to sort points on Y  Axis
+ */
+inline bool Xcompare(Point p1, Point p2){ return p1.X < p2.X; }
+
+
+
+/**
+ * An algorithm that finds a valid packing rectangle set for a Unit
+ * square. While the square is a unit one, for simplicity, you can set the
+ * dimensions with 'squareDim' which will consider a square of size squareDim x
+ * squareDim instead of 1x1.
+ */
+Rectangle* FindValidPacking(Point points[], size_t size, int squareDim = 1000){
+		Point * columns = new Point[size];
+		Point * rows = new Point[size];
+		std::copy(points, points + size, columns);
+		std::copy(points, points + size, rows);
+		std::sort(columns, columns + size, Xcompare);
+		std::sort(rows, rows + size, Ycompare);
+
+		for (size_t i = 0; i < size; i++)
+		{
+				// build psuedo squares ?
+				
+		}
+
+		return 0;
+}
+
+
+
+/**
+ * Takes an array of rectangles, and checks that they are a valid packing, ie,
+ * they do not intersect
+ */
+bool isValidPacking(Rectangle rectangles[], size_t size, int squareDim = 1000){
+		return false;
+}

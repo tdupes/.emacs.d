@@ -1,0 +1,45 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 14}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+
+\noindent Recommended Reading: BCKO/BKOS: Chapter 3;
+O'Rourke, Chapters 1 and 2.
+
+
+\medskip
+\noindent {\bf (14).} 
+As we discussed in class, 
+Chazelle has shown that one can determine if a given list of $n$ vertices
+constitutes a simple polygon in time $O(n)$.  Using this as a ``black box'',
+explain in detail how you would check if a simple polygon $P$ intersects
+a simple polygon $Q$ in time $O(|P|+|Q|)$.
+
+
+
+\end{document}

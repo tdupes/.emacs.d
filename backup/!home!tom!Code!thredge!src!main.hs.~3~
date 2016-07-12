@@ -1,0 +1,51 @@
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+
+import Web.Scotty
+import Data.Text
+import qualified Data.Text.Lazy as LT
+import qualified Data.Text.IO as TIO
+import System.Directory
+import Network.Wai.Middleware.Static
+import Thredge.Types
+
+-- | main function for thredge website
+main :: IO ()
+main = do
+  getCurrentDirectory >>= putStrLn 
+  homeText <- home
+  scotty 3000 $ do
+    middleware $ staticPolicy (noDots >-> addBase "/src/Resources/Static/")
+    get "/" $ do
+      html $ LT.fromStrict homeText
+    get "/img/:imgfile" $ do -- provide all image files
+      imgfile <- param "imgfile"
+      file $ unpack $ append "img/" imgfile
+    get "/css/:file" $ do -- provide all static css files
+      cssfile <- param "file"
+      file $ unpack $ append "css/" cssfile
+    get "/less/:file" $ do
+      lessfile <- param "file"
+      file $ unpack $ append "less/" lessfile
+    get "/js/:file" $ do
+      jsfile <- param "file"
+      file $ unpack $ append "js/" jsfile
+    get "/fonts/:file" $ do
+      fontfile <- param "file"
+      file $ unpack $ append "fonts/" fontfile
+    get "/font-awesome/:file" $ do
+      fontfile <- param "file"
+      file $ unpack $ append "font-awesome/" fontfile
+   
+
+
+-- | value that will hold the text of the html for the home page
+home :: IO Text
+home = TIO.readFile (templateLocation ++ "index.html")
+
+
+-- | This value hold the relative location to the templates dir relative to the src directory
+templateLocation :: String
+templateLocation = "./src/Resources/Templates/"
+                   

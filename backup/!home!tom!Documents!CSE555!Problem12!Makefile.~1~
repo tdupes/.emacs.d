@@ -1,0 +1,4 @@
+.PHONY: check-syntax
+
+check-syntax:
+    $(CC) $(CFLAGS) -Wall -Wextra -0pedantic -fsyntax-only $(SRCS)

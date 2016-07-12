@@ -1,0 +1,30 @@
+* TODO WHEN TO APPLY FOR GRADUATION???
+:CATEGORY: School/Grad
+* TODO Application to enter Grad School
+SCHEDULED: <2016-04-15 Fri>
+* DONE CSE 308-HW 1 DUE
+CLOSED: [2016-01-30 Sat 17:15] SCHEDULED: <2016-01-29 Fri>
+* TODO CSE 308-HW 2 DUE
+SCHEDULED: <2016-02-15 Mon>
+* TODO AMS 303 HW 1 DUE
+SCHEDULED: <2016-02-05 Fri>
+* TODO CSE 555 HW 1 DUE
+SCHEDULED: <2016-02-04 Thu>
+* TODO Print out reading for his 305
+* Classes
+:CATEGORY: Class
+** AMS 303 1:00pm-2:20pm
+<%%(org-class 2016 1 25 2016 5 7 1)>
+<%%(org-class 2016 1 25 2016 5 7 5)>
+** HIS 305 4:00pm-5:20pm
+<%%(org-class 2016 1 25 2016 5 7 1)>
+<%%(org-class 2016 1 25 2016 5 7 3)>
+** CSE 308 11:30am-12:50pm
+<%%(org-class 2016 1 25 2016 5 7 2)>
+<%%(org-class 2016 1 25 2016 5 7 4)>
+** CSE 555 2:30pm-3:50pm
+<%%(org-class 2016 1 25 2016 5 7 2)>
+<%%(org-class 2016 1 25 2016 5 7 4)>
+** AMS 315 7:00pm-8:20pm
+<%%(org-class 2016 1 25 2016 5 7 2)>
+<%%(org-class 2016 1 25 2016 5 7 4)>

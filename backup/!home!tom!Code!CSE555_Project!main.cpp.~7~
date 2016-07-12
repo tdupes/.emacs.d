@@ -1,0 +1,10 @@
+#include <stdint.h>
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+		int f = argc + 4;
+		println(f);
+}
+

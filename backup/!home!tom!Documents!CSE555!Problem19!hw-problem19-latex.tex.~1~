@@ -1,0 +1,58 @@
+% hw set 4, 2016
+
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 19}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+
+\noindent Recommended Reading: BKOS/BCKO: Chapter 4;
+O'Rourke, Section 2.5 (Convex Partitioning)
+
+\medskip
+\noindent {\bf (19).}  
+Let $H$ be a set of at least three half-planes with a non-empty
+intersection such that not all bounding lines are parallel. We call a
+half-plane $h \in H$ {\em redundant} if it does not contribute an edge
+to $\bigcap H$.  Prove that for any redundant half-plane $h\in H$
+there are two half-planes $h', h'' \in H$ such that $h'\cap h''
+\subset h$.  Give an $O(n\log n)$ time algorithm to compute all
+redundant half-planes.
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+

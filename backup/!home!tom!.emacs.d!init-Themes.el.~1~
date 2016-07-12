@@ -1,0 +1,52 @@
+
+;;;;;;monokai
+;; (load-theme 'monokai t)
+
+
+;;;;;;;solarized dark
+;; (require 'color-theme)
+;; (require 'color-theme-solarized)
+;; (color-theme-solarized)
+;; (set-frame-parameter nil 'background-mode 'dark)
+;; ;(set-terminal-parameter nil 'background-mode 'dark)
+
+
+;;;;;;zenburn;
+;;(load-theme 'zenburn t)
+
+;;; gruvbox theme
+(load-theme 'gruvbox t)
+
+;;load some control funcs
+(load-file "~/.emacs.d/ThemeControl.el")
+
+;;alternative powerline
+(add-to-list 'load-path "~/.emacs.d/powerline")
+(require 'powerline)
+(powerline-default-theme)
+
+;;add git to powerline
+(vc-mode 1)
+
+;; I prefer linux style over gnu style 
+(setq c-default-style "bsd"
+      c-basic-offset 4)
+
+;; expand region helps expand the selection
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+
+;; avy make jumping around a buffer pretty easy
+(add-to-list 'load-path "~/.emacs.d/avy")
+(require 'avy)
+(avy-setup-default)
+(global-set-key (kbd "C-:") 'avy-goto-char)
+(global-set-key (kbd "C-'") 'avy-goto-char-2)
+(global-set-key (kbd "M-g f") 'avy-goto-line)
+(global-set-key (kbd "M-g e") 'avy-goto-word-0)
+
+;; wrap region
+(add-to-list 'load-path "~/.emacs.d/wrap-region.el/")
+(require 'wrap-region)
+(wrap-region-mode t)

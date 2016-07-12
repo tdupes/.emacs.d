@@ -1,0 +1,32 @@
+{-# LANGUAGE OverloadedStrings #-}
+module Network.BlockchainInfo.API where
+
+import qualified Data.Text as T
+
+
+{-
+the following module makes it easy to interact with the Blockchain.info api of
+creating and using wallets
+-}
+
+data CreateWalletParams = CreateWalletParams {
+  password :: T.Text,
+  api_code :: T.Text,
+  privateKey  :: T.Text,
+  label :: T.Text,
+  email :: T.Text
+}
+
+data BlockchainWallet = BlockchainWallet {
+  guid    :: T.Text,
+  address :: T.Text,
+  link    :: T.Text 
+ } deriving (Show)
+
+
+createWallet :: CreateWalletParams -> BlockchainWallet
+createWallet _  = BlockchainWallet { 
+  guid = "",
+  address = "",
+  link = ""
+}

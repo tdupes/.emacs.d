@@ -1,0 +1,3 @@
+#!/bin/bash
+
+if [[ -z `xrandr | grep " connected" | grep 'VGA'` ]]; then

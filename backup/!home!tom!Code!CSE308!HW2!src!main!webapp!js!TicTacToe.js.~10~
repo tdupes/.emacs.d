@@ -1,0 +1,169 @@
+var X = 1;
+var O = 2;
+var empty = 0;
+
+function convert(val){
+		switch(val){
+		case X: return "X";
+		case O: return "O";
+		default:return "_";
+		}
+}
+
+function revConvert(val){
+		switch(val){
+		case "X": return X;
+		case "O": return O;
+		default:  return empty;
+		}
+}
+/**
+ * The User is always X and the computer is always O
+*/
+var TicTacToe = {
+		board: [
+				[empty, empty, empty],
+				[empty, empty, empty],
+				[empty, empty, empty]
+		],
+		availableSpots: [0,1,2,3,4,5,6,7,8],
+		setX: function (row, col) {
+				this.board[row][col] = X;
+				var spot = (row * 3) + col;
+				this.availableSpots = this.availableSpots.filter(function(e ){ return e != spot; });
+		},
+		setO: function (row, col) {
+				this.board[row][col] = O;
+				var spot = (row * 3) + col;
+				this.availableSpots = this.availableSpots.filter(function(e ){ return e != spot; });
+		},
+		isOver: function () {
+				return this.getWinner() != empty;
+		},
+		getGameWinner: function () {
+				return getWinner(this.board);
+		},
+		printBoard: function () {
+				var boardString = '_____________';
+				for (var i = 0; i < this.board.length; i++) {
+						boardString += '\n|';
+						for (var j = 0; j < this.board[i].length; j++) {
+								if (this.board[i][j] == X)
+										boardString += ' X |';
+								else if (this.board[i][j] == O) {
+										boardString += ' O |';
+								} else {
+										boardString += ' _ |';
+								}
+						}
+				}
+				console.log(boardString + '\n_____________');
+		},
+		flattenBoard: function () {
+				return [].concat.apply([], this.board);
+		},
+		convertTable: function() {
+				return this.board.map(function (e){
+						e.map(convert);
+				});
+		},
+		get: function (row, col){
+				return this.board[row][col];
+		},
+
+		// returns the winner who won in board, returns empty if non did
+		getWinner: function() {
+				for (var i = 0; i < 3; i++) {
+			
+						// check rows
+						if (this.get(i,0) == this.get(i,1) &&
+								this.get(i,0) == this.get(i,2)) {
+								return this.get(i,0);
+						}
+
+						// check columns
+            if ((this.get(0,i) == this.get(1,i) &&
+                 this.get(0,i) == this.get(2,i))) {
+								return this.get(0,i);
+						}
+				}
+
+				// check diagonals
+        if ((this.get(0,0) == this.get(1,1) && this.get(0,0) == this.get(2,2)) ||
+            (this.get(0,2) == this.get(1,1) && this.get(0,2) == this.get(2,0))) {
+            return this.get(1,1);
+				}
+
+				return empty;
+		},
+		AIMove: function() {
+				var r = Math.random();
+				var move = Math.round(r * this.availableSpots.length);
+
+				move = this.availableSpots[move];
+
+				var row = Math.floor(move / 3);
+				var col = move % 3;
+
+				// console.log(possiblespots, move, row, col);
+				this.setO(row, col);
+				return [row, col];
+		}
+};
+
+
+
+// converts the table in TicTacToe.html to a javascript 2d array
+function convertTableToBoard(){
+		var newboard = [];
+		$("table tr").each(function() {
+				var arrayOfThisRow = [];
+				var tableData = $(this).find('td');
+				if (tableData.length > 0)
+				{
+						tableData.each(function() {
+								arrayOfThisRow.push(revConvert($(this).text().trim()));
+						});
+						newboard.push(arrayOfThisRow);
+				}
+		});
+		return newboard;
+}
+
+
+// change the board when a user clicks, and call AI
+$(document).ready(function() {
+		$( "table tr td" ).click(function(e){
+				//			alert("pressed me");
+				var id = $(this).attr("id");
+
+				var row = Number(id.charAt(0));
+				var col = Number(id.charAt(1));
+
+//				alert(TicTacToe.get(row, col));
+				if(TicTacToe.get(row, col) == empty)
+				{
+
+						$(this).append("X");
+						TicTacToe.setX(row, col);
+
+						if(TicTacToe.isOver())
+						{
+								alert("You Win");
+						} else
+						{
+								var move = TicTacToe.AIMove();
+								var identifier = "td#" + move[0].toString() + move[1].toString();
+								$(identifier).append("O");
+								// alert(TicTacToe.flattenBoard());
+								// alert(TicTacToe.availableSpots);
+								if(TicTacToe.isOver())
+								{
+										alert("You Lose");
+								}
+						}
+				} else {
+						// spot was already picked
+				}
+		});
+});

@@ -1,0 +1,38 @@
+This is My Emacs Configuration.
+
+* Things to download
+** Eclim
+** ghc-mod
+** Racer
+* Features
+** Java
+*** Eclim
+** Scala
+*** Using Eclim instead of Ensime
+** Haskell
+*** ghc-mod
+** C++/C
+*** Irony mode
+*** Cmake-Ide
+
+** Rust
+*** Racer
+uses Racer for auto completion in Rust code
+** LaTeX
+*** Auctex
+** Elisp
+litable for on the fly evaluation of elisp
+*** Custom Keys
+C-c C-f for finding a function
+** Coq/Proof Assistants
+Proof General is installed
+** Error Handling
+*** Flymake/FlyCheck
+You can jump the the previous and next error in your file with M-n/M-p,
+Works with flymake, eclim, flyspell, and flycheck
+** Javascript
+*** Web-mode
+*** Tern for auto-completion
+*** Flymake
+** R
+ESS allows for many ide like features for R

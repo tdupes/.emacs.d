@@ -1,0 +1,24 @@
+module Network.BlockchainInfo.API where
+
+{-
+the following module makes it easy to interact with the Blockchain.info api of
+creating and using wallets
+-}
+
+data CreateWalletParams = Show a => CreateWalletParams {
+  password :: a
+}
+
+data BlockchainWallet = BlockchainWallet {
+  guid :: String,
+  address :: String,
+  link :: String
+  } deriving (Show)
+
+
+createWallet :: CreateWalletParams -> BlockchainWallet
+createWallet params = BlockchainWallet {
+  guid = "",
+  address = "",
+  link = ""
+}

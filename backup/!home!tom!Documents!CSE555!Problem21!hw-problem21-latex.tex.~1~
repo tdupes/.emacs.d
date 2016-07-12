@@ -1,0 +1,52 @@
+% hw set 4, 2016
+
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 21}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+
+\noindent Recommended Reading: BKOS/BCKO: Chapter 4;
+O'Rourke, Section 2.5 (Convex Partitioning)
+
+\medskip
+\noindent {\bf (21).} 
+On $n$ parallel lanes of a super-highway $n$ cars are going with constant speeds
+$v_1, v_2,\ldots, v_n$.  At time $t = 0$ the cars are at positions
+$k_1, k_2,\ldots, k_n$. Give an $O(n\log n)$ algorithm that detects
+all cars that at some moment in time are leading.
+
+
+\end{document}
+
+
+
+
+
+
+
+
+

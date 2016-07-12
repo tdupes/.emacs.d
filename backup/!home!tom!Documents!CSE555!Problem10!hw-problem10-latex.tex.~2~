@@ -1,0 +1,46 @@
+\documentclass[11pt]{article}
+
+\usepackage{fullpage}
+\usepackage{epsfig}
+
+\begin{document}
+
+\centerline{AMS 545/CSE 555 (Spring, 2016) \hfill Joe Mitchell}
+\medskip
+\centerline{\Large\bf COMPUTATIONAL GEOMETRY}
+\bigskip
+
+\centerline{\Large\bf Homework Problem \# 10}
+
+\bigskip
+
+
+{\bf Upload your solution to Blackboard by the due date.}
+You are expected to write up your solutions {\em on your own}, {\bf
+without referring to other students' writeups or to solutions you may
+find on the web}; you are welcome to discuss problems with me, the TA,
+and classmates, but {\bf must do the writeup entirely on your own}.
+
+\medskip
+{\bf Do NOT write your name on your submission.} It is recorded with Blackboard, so we know who you are.  But we want your paper to be
+anonymous, since it may be peer-assessed.
+\medskip
+
+\noindent Recommended Reading: BKOS: Chapter 2; O'Rourke sections 7.7, 7.8. Handout on Melkman's algorithm.
+
+
+\medskip
+
+\noindent {\bf (10).}  
+Given a set $D$ of $n$ disjoint circular disks in the plane, and a set $S$ of $m$ points, 
+devise an efficient algorithm to determine how many points are in each disk.
+What is the running time (in big-Oh)?
+
+\textbf{A: This can be solved in O($nlogn$) time by modifying the sweeping line
+  algorithm.}
+
+
+\end{document}
+
+
+
