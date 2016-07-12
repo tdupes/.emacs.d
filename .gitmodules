@@ -1,9 +1,6 @@
 [submodule "company-ghc"]
 	path = company-ghc
 	url = https://github.com/iquiw/company-ghc.git
-[submodule "web-mode"]
-	path = web-mode
-	url = https://github.com/fxbois/web-mode.git
 [submodule "emacs-powerline"]
 	path = emacs-powerline
 	url = https://github.com/jonathanchu/emacs-powerline.git
