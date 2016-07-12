@@ -18,3 +18,12 @@ el-get/*
 auto-save-list/*
 
 .cask/*
+
+.litable*
+.mc*
+ac-*
+projectile-bookmarks*
+recentf
+timelog
+
+.CurProjects*
