@@ -36,3 +36,5 @@ url/*
 
 backup/*
 *.cache
+
+emms/*
