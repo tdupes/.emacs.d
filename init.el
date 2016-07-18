@@ -159,7 +159,8 @@
 										 (define-key irony-mode-map [remap completion-at-point]
 											 'irony-completion-at-point-async)
 										 (define-key irony-mode-map [remap complete-symbol]
-											 'irony-completion-at-point-async))
+											 'irony-completion-at-point-async)
+										 (define-key irony-mode-map (kbd "C-c C-t") 'irony-get-type))
 
 									 (add-hook 'irony-mode-hook 'my-irony-mode-hook)
 									 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
@@ -170,12 +171,11 @@
 									 (eval-after-load 'company
 										 '(add-to-list
 											 'company-backends '(company-irony-c-headers company-irony)))))
-	 (:name rtags ;; better taggins system for c/c++
+	 (:name rtags ;; better tagging system for c/c++
 					:after (progn
 									 (add-hook 'c-mode-common-hook 'rtags-start-process-unless-running)
 									 (add-hook 'c++-mode-common-hook 'rtags-start-process-unless-running)
 									 (push 'company-rtags company-backends)
-									 (setq rtags-path "~/.emacs.d/rtags/bin")
 									 (setq rtags-autostart-diagnostics t)
 									 (setq rtags-completions-enabled t)))
 	 (:name flycheck-irony
@@ -183,14 +183,14 @@
 									 (eval-after-load 'flycheck
 										 '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
-									 (setq flycheck-clang-language-standard "c++11")
-									 (setq flycheck-clang-args "-std=c++11")
-									 (setq irony-additional-clang-options '("-std=c++11" "-stdlib=libc++"))
+									 (setq flycheck-clang-language-standard "c++14")
+									 (setq flycheck-clang-args "-std=c++14")
+									 (setq irony-additional-clang-options '("-std=c++14" "-stdlib=libc++"))
 
 									 (add-hook 'c++-mode-hook (lambda()
-																							(setq flycheck-clang-language-standard "c++11")
-																							(setq flycheck-clang-args "-std=c++11")
-																							(setq irony-additional-clang-options '("-std=c++11" "-stdlib=libc++"))))))
+																							(setq flycheck-clang-language-standard "c++14")
+																							(setq flycheck-clang-args "-std=c++14")
+																							(setq irony-additional-clang-options '("-std=c++14" "-stdlib=libc++"))))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -351,13 +351,6 @@
 									 (wrap-region-add-wrapper "/" "/" nil 'ruby-mode)
 									 (wrap-region-add-wrapper "/* " " */" "#" '(java-mode javascript-mode css-mode))
 									 (wrap-region-add-wrapper "`" "`" nil '(markdown-mode ruby-mode))))
-	 ;; (:name window-purpose 	 ;; purpose mode
-	 ;; 				:after (progn
-	 ;; 								 (load-file "~/.emacs.d/.purpose-config.el")
-	 ;; 								 (purpose-mode)
-
-	 ;; 								 (define-key purpose-mode-map (kbd "C-c b") 'purpose-switch-buffer-with-purpose)
-	 ;; 								 (define-key purpose-mode-map (kbd "C-x b") 'helm-buffers-list)))
 	 (:name helm
 					:after (progn
 									 (require 'helm-config)
@@ -419,10 +412,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 	 )
  )
-
+;; bootstrap el-get with el-get
 (setq my-el-get-packages '(el-get))
 (setq my-el-get-packages
       (append my-el-get-packages
@@ -487,9 +479,8 @@
 (global-hl-line-mode +1) ;;highlight current line
 (setq frame-title-format "%b") ;;always dispay filename as titlebar
 
-
-(menu-bar-mode -1)
 (toggle-scroll-bar -1) 
+(menu-bar-mode -1)
 (tool-bar-mode -1)
 
 ;; use spaces instead of tabs
@@ -539,7 +530,57 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Themes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-file "~/.emacs.d/init-Themes.el")
+(load-theme 'gruvbox t)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; modeline ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'load-path "~/.emacs.d/powerline")
+(require 'powerline)
+(set-face-background 'powerline-active2 "#3c3836")
+(set-face-background 'powerline-active2 "#928374")
+(set-face-background 'mode-line "#fe8109")
+(set-face-foreground 'mode-line "#fbf1c7")
+;; spacemacs mode line theme
+(add-to-list 'load-path "~/.emacs.d/lisp/spaceline/")
+(require 'spaceline-config)
+(spaceline-spacemacs-theme)
+(setq spaceline-separator-dir-left '(left . left))
+(setq spaceline-separator-dir-right '(right . right))
+(setq powerline-default-separator 'wave)
+(spaceline-compile)
+
+;;add git to powerline
+(vc-mode 1)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; I prefer linux style/bsd over gnu style 
+(setq c-default-style "bsd"
+      c-basic-offset 2)
+
+(show-paren-mode 1) ; turn on paren match highlighting
+(setq show-paren-style 'mixed);highlight entire bracket exp
+
+(require 'linum) ;; line numbers
+(add-hook 'prog-mode-hook 'linum-on) ; only turn line numbers for programing modes
+
+;; no line numbers for doc view, 
+(add-hook 'doc-view-mode-hook (lambda () (linum-mode -1)))
+(setq column-number-mode t);; Sets up column numbers 
+
+;; always add closing brackets and parens
+(electric-pair-mode 1) 
+
+(set-frame-font "DejaVu Sans Mono for Powerline-8" nil t)
+
+;;; set up unicode
+(prefer-coding-system										'utf-8)
+(set-default-coding-systems							'utf-8)
+(set-terminal-coding-system							'utf-8)
+(set-keyboard-coding-system							'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)                      
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+
+(global-prettify-symbols-mode +1) ;; pretty symbols like lambda 
+
+(setq popup-use-optimized-column-computation nil)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -547,17 +588,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;EMMS (media playing in emacs);;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-file "~/.emacs.d/init-EMMS.el")
+(require 'emms-setup)
+(emms-standard)
+(defvar dired-mplayer-program "/usr/bin/vlc")
+(emms-default-players)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Web ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun openInFirefox ()
+(defun open-in-firefox ()
+	"Open the current file in firefox." 
 	(interactive)
 	(shell-command (concat "firefox " (buffer-name))))
 
@@ -573,7 +616,7 @@
 (eval-after-load 'sgml-mode
 	'(progn
 		 (define-key web-mode-map (kbd "C-c w b") 'web-beautify-html)
-		 (define-key web-mode-map (kbd "C-c f") 'openInFirefox)))
+		 (define-key web-mode-map (kbd "C-c f") 'open-in-firefox)))
 
 (eval-after-load 'css-mode
   '(define-key css-mode-map (kbd "C-c w b") 'web-beautify-css))
@@ -624,7 +667,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;Dired Extensions;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-file "~/.emacs.d/init-Dired.el")
+(put 'dired-find-alternate-file 'disabled nil)
+(setq doc-view-resolution 300)
+(setq line-number-mode nil)
+(setq dired-listing-switches "-alh")
+(define-key dired-mode-map (kbd "C-x w") 'wdired-change-to-wdired-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -675,7 +722,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;SQL stuff;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-file "~/.emacs.d/init-SQL.el")
+;; on arch mysql is through mariadb which has an odd prompt-for-change-log-name
+;; which won't show up  with current set up in sqli mode
+(require 'sql)
+(sql-set-product-feature 'mysql :prompt-regexp "^\\(?:mysql\\|mariadb\\).*> ")
+(add-hook 'sql-interactive-mode-hook (lambda () (toggle-truncate-lines t)))
+(add-to-list 'company-backends 'company-edbi) ;; mysql auto complete
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -692,6 +744,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Proof Assitants;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-file "~/.emacs.d/init-Coq.el")
+(load-file "~/.emacs.d/ProofGeneral/generic/proof-site.el")
+(require 'proof-site) ;; Open .v files with Proof-General's coq-mode
+;; Load company-coq when opening Coq files
+(add-hook 'coq-mode-hook #'company-coq-initialize) 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -705,5 +761,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
+;; enable the  erase-buffer function
 (put 'erase-buffer 'disabled nil)
