@@ -1,5 +1,3 @@
-
-;;; Code:
 (require 'dash)
 
 (defvar current-Project-Dirs nil "variable storing the current projects being worked on")
@@ -46,3 +44,5 @@
 	(if (file-exists-p "~/.emacs.d/.CurProjects")
 			(delete-file "~/.emacs.d/.CurProjects"))
 	(write-region (createSaveString) nil "~/.emacs.d/.CurProjects" 'append))
+
+(provide 'current-project)
