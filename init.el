@@ -584,9 +584,6 @@
 (require 'electric-align)
 (add-hook 'prog-mode-hook 'electric-align-mode)
 
-;; similar feature to sublimes indentation lines - not on on default
-(add-to-list 'load-path "~/.emacs.d/Highlight-Indentation-for-Emacs")
-
 ;; winner mode, allows undoing and redoing window configurations
 (when (fboundp 'winner-mode)
 	(winner-mode 1))
