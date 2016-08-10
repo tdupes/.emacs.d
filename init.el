@@ -25,114 +25,116 @@
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-recipes/")
 
 ;; set local recipes, el-get-sources should only accept PLIST element
-(setq el-get-sources
-      '(
+(setq
+ el-get-sources
+ '(
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ide features ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:name yasnippet ;; cool snippet library for emacs
-               :after (progn
-                        (yas-global-mode 1)
-                        (add-hook 'prog-mode-hook #'yas-minor-mode)
-                        (add-to-list 'yas/root-directory "~/.emacs.d/snippets/yasnippet-snippets")
+   (:name yasnippet ;; cool snippet library for emacs
+          :after (progn
+                   (yas-global-mode 1)
+                   (add-hook 'prog-mode-hook #'yas-minor-mode)
+                   (add-to-list 'yas/root-directory "~/.emacs.d/snippets/yasnippet-snippets")
 
-                        (defun yas/org-very-safe-expand ()
-                          (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+                   (defun yas/org-very-safe-expand ()
+                     (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
-                        (global-set-key (kbd "C-M-y") 'yas-expand)))
+                   (global-set-key (kbd "C-M-y") 'yas-expand)))
 
 
-        (:name magit        ; git meet emacs, and a binding
-               :after (progn
-                        (global-set-key (kbd "C-x C-z") 'magit-status)))
+   (:name magit        ; git meet emacs, and a binding
+          :after (progn
+                   (global-set-key (kbd "C-x C-z") 'magit-status)))
 
-        ;; code completion library
-        (:name company-mode
-               :after (progn
-                        (global-company-mode)
-                        (global-set-key (kbd "<M-tab>") 'company-complete)
-                        (global-set-key (kbd "<backtab>") 'company-complete)
-                        (define-key global-map (kbd "C-.") 'company-files)
+   ;; code completion library
+   (:name company-mode
+          :after (progn
+                   (global-company-mode)
+                   (global-set-key (kbd "<M-tab>") 'company-complete)
+                   (global-set-key (kbd "<backtab>") 'company-complete)
+                   (define-key global-map (kbd "C-.") 'company-files)
 
-                        (set-face-attribute 'company-tooltip nil
-                                            :background "#ebdbb2"
-                                            :foreground "#282828")
-                        (set-face-attribute 'company-scrollbar-bg nil
-                                            :background "#076678")
+                   (set-face-attribute 'company-tooltip nil
+                                       :background "#ebdbb2"
+                                       :foreground "#282828")
+                   (set-face-attribute 'company-scrollbar-bg nil
+                                       :background "#076678")
 
-                        (set-face-attribute 'company-scrollbar-fg nil
-                                            :background "#d65d0e")
+                   (set-face-attribute 'company-scrollbar-fg nil
+                                       :background "#d65d0e")
 
-                        (set-face-attribute 'company-tooltip-common-selection nil
-                                            :background "#928374"
-                                            :foreground "#f9f5d7")
+                   (set-face-attribute 'company-tooltip-common-selection nil
+                                       :background "#928374"
+                                       :foreground "#f9f5d7")
 
-                        (set-face-attribute 'company-tooltip-selection nil
-                                            :background "#928374"
-                                            :foreground "#f9f5d7")
+                   (set-face-attribute 'company-tooltip-selection nil
+                                       :background "#928374"
+                                       :foreground "#f9f5d7")
 
-                        (set-face-attribute 'company-tooltip-common nil
-                                            :background "#79740e"
-                                            :foreground "#fbf1c7")))
+                   (set-face-attribute 'company-tooltip-common nil
+                                       :background "#79740e"
+                                       :foreground "#fbf1c7")))
 
-        (:name flycheck ; general error reporting library
-               :after (progn
-                        (global-flycheck-mode)
-                        (defun nextError ()
-                          "universal error navigation, this goes to the next error in the
+   (:name flycheck ; general error reporting library
+          :after (progn
+                   (global-flycheck-mode)
+                   (defun nextError ()
+                     "universal error navigation, this goes to the next error in the
                       buffer"
-                          (interactive)
-                          (cond
-                           ((bound-and-true-p flyspell-mode)
-                            (flyspell-goto-next-error))
+                     (interactive)
+                     (cond
+                      ((bound-and-true-p flyspell-mode)
+                       (flyspell-goto-next-error))
 
-                           ((bound-and-true-p eclim-mode)
-                            (eclim-problems-next-same-window))
+                      ((bound-and-true-p eclim-mode)
+                       (eclim-problems-next-same-window))
 
-                           ((bound-and-true-p flycheck-mode)
-                            (flycheck-next-error))
+                      ((bound-and-true-p flycheck-mode)
+                       (flycheck-next-error))
 
-                           ((bound-and-true-p flymake-mode)
-                            (flymake-goto-next-error))))
+                      ((bound-and-true-p flymake-mode)
+                       (flymake-goto-next-error))))
 
-                        (defun prevError ()
-                          (interactive)
-                          (cond
-                           ((bound-and-true-p eclim-mode)
-                            (eclim-problems-previous-same-window))
+                   (defun prevError ()
+                     (interactive)
+                     (cond
+                      ((bound-and-true-p eclim-mode)
+                       (eclim-problems-previous-same-window))
 
-                           ((bound-and-true-p flyspell-mode)
-                            (flyspell-goto-previous-error (point)))
+                      ((bound-and-true-p flyspell-mode)
+                       (flyspell-goto-previous-error (point)))
 
-                           ((bound-and-true-p flycheck-mode)
-                            (flycheck-previous-error))
+                      ((bound-and-true-p flycheck-mode)
+                       (flycheck-previous-error))
 
-                           ((bound-and-true-p flymake-mode)
-                            (flymake-goto-prev-error))))
+                      ((bound-and-true-p flymake-mode)
+                       (flymake-goto-prev-error))))
 
-                        (require 'flymake)
-                        (global-set-key (kbd "M-n") 'nextError)
-                        (global-set-key (kbd "M-p") 'prevError)))
-        (:name multi-term ;; better version for running terminals in emacs
-               :after (progn
-                        (setq multi-term-program "/bin/zsh")
-                        (global-set-key [(f10)] 'multi-term)
-                        (setq multi-term-program "/bin/zsh")
-                        (setq explicit-shell-file-name "/bin/zsh")
+                   (require 'flymake)
+                   (global-set-key (kbd "M-n") 'nextError)
+                   (global-set-key (kbd "M-p") 'prevError)))
+   (:name multi-term ;; better version for running terminals in emacs
+          :after (progn
+                   (setq multi-term-program "/bin/zsh")
+                   (global-set-key [(f10)] 'multi-term)
+                   (setq multi-term-program "/bin/zsh")
+                   (setq explicit-shell-file-name "/bin/zsh")
 
-                        (add-hook 'term-mode-hook
-                                  (lambda ()
-                                    (setq yas-dont-activate t)
-                                    (setq term-buffer-maximum-size 10000)
-                                    (setq show-trailing-whitespace nil)
-                                    ;; better pasting in terminal
-                                    (define-key term-raw-map (kbd "C-y") 'term-paste)))
+                   (add-hook 'term-mode-hook
+                             (lambda ()
+                               (setq yas-dont-activate t)
+                               (setq term-buffer-maximum-size 10000)
+                               (setq show-trailing-whitespace nil)
+                               ;; better pasting in terminal
+                               (define-key term-raw-map (kbd "C-y") 'term-paste)))
 
-                        (add-to-list 'term-bind-key-alist '("M-d" . term-send-forward-kill-word))
-                        (add-to-list 'term-bind-key-alist '("<C-backspace>" . term-send-backward-kill-word))
-                        (add-to-list 'term-bind-key-alist '("<M-backspace>" . term-send-backward-kill-word))
-                        (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev)) 
-                        (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))))
+                   (add-to-list 'term-bind-key-alist '("M-d" . term-send-forward-kill-word))
+									 (add-to-list 'term-bind-key-alist '("<escape>" . term-send-esc))
+                   (add-to-list 'term-bind-key-alist '("<C-backspace>" . term-send-backward-kill-word))
+                   (add-to-list 'term-bind-key-alist '("<M-backspace>" . term-send-backward-kill-word))
+                   (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+                   (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -140,58 +142,59 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; elisp libraries;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:name dash)
+   (:name dash)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; C/C++ packages;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:name irony-mode ; c++ code completion and error reporting
-               :after (progn
-                        (add-hook 'c++-mode-hook  'irony-mode)
-                        (add-hook 'c-mode-hook    'irony-mode)
-                        (add-hook 'objc-mode-hook 'irony-mode)
-                        
-                        ;; replace the `completion-at-point' and `complete-symbol' bindings in
-                        ;; irony-mode's buffers by irony-mode's function
-                        (defun my-irony-mode-hook ()
-                          (define-key irony-mode-map [remap completion-at-point]
-                            'irony-completion-at-point-async)
-                          (define-key irony-mode-map [remap complete-symbol]
-                            'irony-completion-at-point-async)
-                          (define-key irony-mode-map (kbd "C-c C-t") 'irony-get-type))
+   (:name irony-mode ; c++ code completion and error reporting
+          :after (progn
+                   (add-hook 'c++-mode-hook  'irony-mode)
+                   (add-hook 'c-mode-hook    'irony-mode)
+                   (add-hook 'objc-mode-hook 'irony-mode)
 
-                        (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-                        (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+                   ;; replace the `completion-at-point' and `complete-symbol' bindings in
+                   ;; irony-mode's buffers by irony-mode's function
+                   (defun my-irony-mode-hook ()
+                     (define-key irony-mode-map [remap completion-at-point]
+                       'irony-completion-at-point-async)
+                     (define-key irony-mode-map [remap complete-symbol]
+                       'irony-completion-at-point-async)
+                     (define-key irony-mode-map (kbd "C-c C-t") 'irony-get-type))
 
-                        (eval-after-load 'company
-                          '(add-to-list 'company-backends 'company-irony))
+                   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+                   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-                        (eval-after-load 'company
-                          '(add-to-list
-                            'company-backends '(company-irony-c-headers company-irony)))))
-        (:name rtags ;; better tagging system for c/c++
-               :after (progn
-                        (add-hook 'c-mode-common-hook 'rtags-start-process-unless-running)
-                        (add-hook 'c++-mode-common-hook 'rtags-start-process-unless-running)
-                        (push 'company-rtags company-backends)
-                        (setq rtags-autostart-diagnostics t)
-                        (setq rtags-completions-enabled t)))
-        (:name flycheck-irony
-               :after (progn
-                        (eval-after-load 'flycheck
-                          '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+                   (eval-after-load 'company
+                     '(add-to-list 'company-backends 'company-irony))
 
-                        (setq flycheck-clang-language-standard "c++14")
-                        (setq flycheck-clang-args "-std=c++14")
-                        (setq irony-additional-clang-options '("-std=c++14" "-stdlib=libc++"))
+                   (eval-after-load 'company
+                     '(add-to-list
+                       'company-backends '(company-irony-c-headers company-irony)))))
+   (:name rtags ;; better tagging system for c/c++
+          :after (progn
+                   (add-hook 'c-mode-common-hook 'rtags-start-process-unless-running)
+                   (add-hook 'c++-mode-common-hook 'rtags-start-process-unless-running)
+                   (push 'company-rtags company-backends)
+                   (setq rtags-autostart-diagnostics t)
+                   (setq rtags-completions-enabled t)))
+   (:name flycheck-irony
+          :after (progn
+                   (eval-after-load 'flycheck
+                     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
-                        (add-hook 'c++-mode-hook (lambda()
-                                                   (setq flycheck-clang-language-standard "c++14")
-                                                   (setq flycheck-clang-args "-std=c++14")
-                                                   (setq irony-additional-clang-options '("-std=c++14" "-stdlib=libc++"))))))
+                   (setq flycheck-clang-language-standard "c++14")
+                   (setq flycheck-clang-args "-std=c++14")
+                   (setq irony-additional-clang-options '("-std=c++14" "-stdlib=libc++"))
+
+                   (add-hook 'c++-mode-hook
+                             (lambda()
+                               (setq flycheck-clang-language-standard "c++14")
+                               (setq flycheck-clang-args "-std=c++14")
+                               (setq irony-additional-clang-options '("-std=c++14" "-stdlib=libc++"))))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -200,38 +203,38 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Java (and Scala) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:name popup) ;; required by eclim
-        (:name eclim
-               :after (progn
-                        (setq eclim-executable "/opt/eclipse/eclim")
-                        (setq eclim-eclipse-dirs "/opt/eclipse")
-                        ;; (setq eclimd-default-workspace "/home/thomasduplessis/Code/workspace")
-                        (add-to-list 'load-path "~/.emacs.d/lisp/emacs-eclim")
-                        (require 'eclim)
-                        (require 'eclimd)
+   (:name popup) ;; required by eclim
+   (:name eclim
+          :after (progn
+                   (setq eclim-executable "/opt/eclipse/eclim")
+                   (setq eclim-eclipse-dirs "/opt/eclipse")
+                   ;; (setq eclimd-default-workspace "/home/thomasduplessis/Code/workspace")
+                   (add-to-list 'load-path "~/.emacs.d/lisp/emacs-eclim")
+                   (require 'eclim)
+                   (require 'eclimd)
 
                                         ; don't want eclim globally
-                        ;;(global-eclim-mode)
-                        (setq help-at-pt-display-when-idle t)
-                        (setq help-at-pt-timer-delay 0.1)
-                        (help-at-pt-set-timer)
-                        (require 'company-emacs-eclim)
-                        (company-emacs-eclim-setup)
+                   ;;(global-eclim-mode)
+                   (setq help-at-pt-display-when-idle t)
+                   (setq help-at-pt-timer-delay 0.1)
+                   (help-at-pt-set-timer)
+                   (require 'company-emacs-eclim)
+                   (company-emacs-eclim-setup)
 
-                        (global-set-key (kbd "<C-return>") 'company-complete-common)
-                        (add-hook 'java-mode-hook
-                                  (lambda ()
-                                    (define-key java-mode-map (kbd "<M-tab>") 'company-complete-common)
-                                    (define-key java-mode-map (kbd "C-c C-f") 'eclim-java-find-declaration)
-                                    (define-key java-mode-map (kbd "C-c C-r") 'eclim-java-find-references)))
+                   (global-set-key (kbd "<C-return>") 'company-complete-common)
+                   (add-hook 'java-mode-hook
+                             (lambda ()
+                               (define-key java-mode-map (kbd "<M-tab>") 'company-complete-common)
+                               (define-key java-mode-map (kbd "C-c C-f") 'eclim-java-find-declaration)
+                               (define-key java-mode-map (kbd "C-c C-r") 'eclim-java-find-references)))
 
-                        (add-hook 'java-mode-hook
-                                  (lambda ()
-                                    (eclim-mode)))
-                        (add-hook 'scala-mode-hook
-                                  (lambda ()
-                                    (scala-mode-feature-electric-mode)
-                                    (eclim-mode)))))
+                   (add-hook 'java-mode-hook
+                             (lambda ()
+                               (eclim-mode)))
+                   (add-hook 'scala-mode-hook
+                             (lambda ()
+                               (scala-mode-feature-electric-mode)
+                               (eclim-mode)))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -240,9 +243,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Haskell;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-        (:name haskell-mode)
-        
+   (:name haskell-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -250,76 +251,75 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Web mode;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:name web-mode
-               :after (progn  ;; set proper files as web-mode
-                        (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.ssp$" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.jsp$" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.php$\\'" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-                        (add-to-list 'auto-mode-alist '("\\.jsp$" . web-mode))
+   (:name web-mode
+          :after (progn  ;; set proper files as web-mode
+                   (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.ssp$" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.jsp$" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.php$\\'" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+                   (add-to-list 'auto-mode-alist '("\\.jsp$" . web-mode))
 
-                        (setq web-mode-enable-current-element-highlight t)
-                        (setq javascript-i4de4t-level 4) ; javascript-mode
-                        (setq js-i4de4t-level 4) ; js-mode
-                        (setq web-mode-markup-i4de4t-offset 4) ; web-mode, html tag i4 html file
-                        (setq web-mode-css-i4de4t-offset 4) ; web-mode, css i4 html file
-                        (setq web-mode-code-i4de4t-offset 4) ; web-mode, js code i4 html file
-                        (setq css-i4de4t-offset 4)))
-        (:name company-web
-               :after (progn
-                        (add-to-list 'company-backends 'company-web-html)))
-        (:name web-completion-data)
+                   (setq web-mode-enable-current-element-highlight t)
+                   (setq javascript-i4de4t-level 4) ; javascript-mode
+                   (setq js-i4de4t-level 4) ; js-mode
+                   (setq web-mode-markup-i4de4t-offset 4) ; web-mode, html tag i4 html file
+                   (setq web-mode-css-i4de4t-offset 4) ; web-mode, css i4 html file
+                   (setq web-mode-code-i4de4t-offset 4) ; web-mode, js code i4 html file
+                   (setq css-i4de4t-offset 4)))
+   (:name company-web
+          :after (progn
+                   (add-to-list 'company-backends 'company-web-html)))
+   (:name web-completion-data)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Javascript;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        ;; Javascript code completiong and error checking.
-        (:name tern
-               :after (progn
-                        (add-hook 'js-mode-hook (lambda ()
-                                                  (tern-mode t)
-                                                  (flymake-mode t)))
-                        (defun delete-tern-process ()
-                          "function to stop term"
-                          (interactive)
-                          (delete-process "Tern"))
-                        ;; add tern to company. Not working, use C-M-I for now
-                        (add-to-list 'company-backends 'company-tern)))
-        (:name nodejs-repl)    ;; javascript reply
-        (:name jshint-mode ;; error reporting for js
-               :after (progn
-                        (require 'flymake-jshint)))
+   ;; Javascript code completiong and error checking.
+   (:name tern
+          :after (progn
+                   (add-hook 'js-mode-hook (lambda ()
+                                             (tern-mode t)
+                                             (flymake-mode t)))
+                   (defun delete-tern-process ()
+                     "function to stop term"
+                     (interactive)
+                     (delete-process "Tern"))
+                   ;; add tern to company. Not working, use C-M-I for now
+                   (add-to-list 'company-backends 'company-tern)))
+   (:name nodejs-repl)    ;; javascript reply
+   (:name jshint-mode ;; error reporting for js
+          :after (progn
+                   (require 'flymake-jshint)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; editing packages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:name avy ;; package to jump to next letter or line
-               :after (progn
-                        (avy-setup-default)
-                        (global-set-key (kbd "C-:") 'avy-goto-char)
-                        (global-set-key (kbd "C-'") 'avy-goto-char-2)
-                        (global-set-key (kbd "M-g f") 'avy-goto-line)
-                        (global-set-key (kbd "M-g e") 'avy-goto-word-0)))
-        (:name multiple-cursors
-               :after (progn
-                        (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-                        (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-                        (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-                        (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)))
-        (:name expand-region
-               :after (progn
-                        (global-set-key (kbd "C-=") 'er/expand-region)))
-        (:name flyspell)
+   (:name avy ;; package to jump to next letter or line
+          :after (progn
+                   (avy-setup-default)
+                   (global-set-key (kbd "C-:") 'avy-goto-char)
+                   (global-set-key (kbd "C-'") 'avy-goto-char-2)
+                   (global-set-key (kbd "M-g f") 'avy-goto-line)
+                   (global-set-key (kbd "M-g e") 'avy-goto-word-0)))
+   (:name multiple-cursors
+          :after (progn
+                   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+                   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+                   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+                   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)))
+   (:name expand-region
+          :after (progn
+                   (global-set-key (kbd "C-=") 'er/expand-region)))
+   (:name flyspell)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -327,68 +327,68 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;; aesthetic packages/settings ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:name rainbow-delimiters    ;;; highlight unmatched parens 
-               :after (progn
-                        (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
-        ;; god mode
-        (:name god-mode
-               :after (progn
-                        (global-set-key (kbd "C-c g") 'god-local-mode)
+   (:name rainbow-delimiters    ;;; highlight unmatched parens 
+          :after (progn
+                   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
+   ;; god mode
+   (:name god-mode
+          :after (progn
+                   (global-set-key (kbd "C-c g") 'god-local-mode)
 
-                        (defun my-update-cursor ()
-                          "update the cursor to a hollow box if we are in god mode or a read
+                   (defun my-update-cursor ()
+                     "update the cursor to a hollow box if we are in god mode or a read
                       only buffer"
-                          (setq cursor-type
-                                (if (or god-local-mode buffer-read-only)
-                                    'hollow
-                                  'box)))
+                     (setq cursor-type
+                           (if (or god-local-mode buffer-read-only)
+                               'hollow
+                             'box)))
 
-                        (add-hook 'god-mode-enabled-hook 'my-update-cursor)
-                        (add-hook 'god-mode-disabled-hook 'my-update-cursor)))
-        (:name wrap-region
-               :after (progn
-                        (wrap-region-mode t)
-                        (wrap-region-add-wrapper "$" "$")
-                        (wrap-region-add-wrapper "{-" "-}" "#")
-                        (wrap-region-add-wrapper "/" "/" nil 'ruby-mode)
-                        (wrap-region-add-wrapper "/* " " */" "#" '(java-mode javascript-mode css-mode))
-                        (wrap-region-add-wrapper "`" "`" nil '(markdown-mode ruby-mode))))
-        (:name helm
-               :after (progn
-                        (require 'helm-config)
-                        (global-set-key (kbd "M-x") 'helm-M-x)
-                        (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-                        (global-unset-key (kbd "C-x C-f"))
-                        (global-set-key (kbd "C-x C-f") #'helm-find-files)
-                        (global-set-key (kbd "C-x b") 'helm-buffers-list) ;; gives alot more detail
-                        ;; (global-set-key (kbd "C-x C-b") 'list-buffers) not neccessary 
-                        (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-                        (helm-mode 1)
-                        (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-                        (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-                        (define-key helm-map (kbd "C-z")  'helm-select-action)  ; list actions using C-z
-                        (define-key helm-map (kbd "M-n") 'helm-next-line)   ; let alt n be move down too
-                        (define-key helm-map (kbd "M-p") 'helm-previous-line)   ; let alt p be move up too
+                   (add-hook 'god-mode-enabled-hook 'my-update-cursor)
+                   (add-hook 'god-mode-disabled-hook 'my-update-cursor)))
+   (:name wrap-region
+          :after (progn
+                   (wrap-region-mode t)
+                   (wrap-region-add-wrapper "$" "$")
+                   (wrap-region-add-wrapper "{-" "-}" "#")
+                   (wrap-region-add-wrapper "/" "/" nil 'ruby-mode)
+                   (wrap-region-add-wrapper "/* " " */" "#" '(java-mode javascript-mode css-mode))
+                   (wrap-region-add-wrapper "`" "`" nil '(markdown-mode ruby-mode))))
+   (:name helm
+          :after (progn
+                   (require 'helm-config)
+                   (global-set-key (kbd "M-x") 'helm-M-x)
+                   (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+                   (global-unset-key (kbd "C-x C-f"))
+                   (global-set-key (kbd "C-x C-f") #'helm-find-files)
+                   (global-set-key (kbd "C-x b") 'helm-buffers-list) ;; gives alot more detail
+                   ;; (global-set-key (kbd "C-x C-b") 'list-buffers) not neccessary 
+                   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+                   (helm-mode 1)
+                   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+                   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+                   (define-key helm-map (kbd "C-z")  'helm-select-action)  ; list actions using C-z
+                   (define-key helm-map (kbd "M-n") 'helm-next-line)   ; let alt n be move down too
+                   (define-key helm-map (kbd "M-p") 'helm-previous-line)   ; let alt p be move up too
 
-                        (helm-autoresize-mode t)
-                        (setq helm-split-window-in-side-p           t
+                   (helm-autoresize-mode t)
+                   (setq helm-split-window-in-side-p           t
                                         ; open helm buffer inside current window, not occupy whole other window
-                              helm-move-to-line-cycle-in-source     t
+                         helm-move-to-line-cycle-in-source     t
                                         ; move to end or beginning of source when reaching top or bottom of source.
-                              helm-ff-search-library-in-sexp        t
+                         helm-ff-search-library-in-sexp        t
                                         ; search for library in `require' and `declare-function' sexp.
-                              helm-scroll-amount                    8
+                         helm-scroll-amount                    8
                                         ; scroll 8 lines other window using M-<next>/M-<prior>
-                              helm-ff-file-name-history-use-recentf t)))
+                         helm-ff-file-name-history-use-recentf t)))
 
-        (:name projectile ;; manage projects and find files
-               :after (progn
-                        (projectile-global-mode)
-                        (setq projectile-mode-line
-                              '(:eval (format " Proj[%s]" (projectile-project-name))))))
-        (:name helm-projectile)
-        (:name helm-c-flycheck)
-        (:name dirtree)
+   (:name projectile ;; manage projects and find files
+          :after (progn
+                   (projectile-global-mode)
+                   (setq projectile-mode-line
+                         '(:eval (format " Proj[%s]" (projectile-project-name))))))
+   (:name helm-projectile)
+   (:name helm-c-flycheck)
+   (:name dirtree)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -396,25 +396,26 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; extra modes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:name markdown-mode)
+   (:name markdown-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Other Packages;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        (:name emms ;; emacs multimedia system
-               :after (progn
-                        (require 'emms-setup)
-                        (emms-standard)
-                        (defvar dired-mplayer-program "/usr/bin/vlc")
-                        (emms-default-players)))
+   (:name emms ;; emacs multimedia system
+          :after (progn
+                   (require 'emms-setup)
+                   (emms-standard)
+                   (defvar dired-mplayer-program "/usr/bin/vlc")
+                   (emms-default-players)))
+	 (:name pdf-tools) ;; better system for viewing pdf files
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        )
-      )
+   )
+ )
 ;; bootstrap el-get with el-get
 (setq my-el-get-packages '(el-get))
 (setq my-el-get-packages
@@ -634,7 +635,7 @@
 (vc-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; I prefer linux style/bsd over gnu style 
+;; I prefer linux style/bsd over gnu style
 (setq c-default-style "bsd"
       c-basic-offset 2)
 
@@ -644,21 +645,21 @@
 (require 'linum) ;; line numbers
 (add-hook 'prog-mode-hook 'linum-on) ; only turn line numbers for programing modes
 
-;; no line numbers for doc view, 
+;; no line numbers for doc view,
 (add-hook 'doc-view-mode-hook (lambda () (linum-mode -1)))
-(setq column-number-mode t);; Sets up column numbers 
+(setq column-number-mode t);; Sets up column numbers
 
 ;; always add closing brackets and parens
 (electric-pair-mode 1) 
 
-(set-frame-font "DejaVu Sans Mono for Powerline-8" nil t)
+(set-frame-font "DejaVu Sans Mono for Powerline-9" nil t)
 
 ;;; set up unicode
 (prefer-coding-system                     'utf-8)
 (set-default-coding-systems               'utf-8)
 (set-terminal-coding-system               'utf-8)
 (set-keyboard-coding-system               'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)                      
+(setq default-buffer-file-coding-system 'utf-8)
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 (global-prettify-symbols-mode +1) ;; pretty symbols like lambda 
