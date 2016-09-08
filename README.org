@@ -2,7 +2,6 @@ This is My Emacs Configuration.
 
 * Things to download
 ** Eclim
-** ghc-mod
 ** Racer
 * Features
 ** Java

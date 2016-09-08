@@ -43,7 +43,7 @@
                    (global-set-key (kbd "C-M-y") 'yas-expand)))
 
 
-   (:name magit        ; git meet emacs, and a binding
+   (:name magit ;; git meet emacs
           :after (progn
                    (global-set-key (kbd "C-x C-z") 'magit-status)))
 
@@ -440,14 +440,18 @@
 
                    (helm-autoresize-mode t)
                    (setq helm-split-window-in-side-p           t
-                                        ; open helm buffer inside current window, not occupy whole other window
+                         ;; open helm buffer inside current window, not occupy whole other window
                          helm-move-to-line-cycle-in-source     t
-                                        ; move to end or beginning of source when reaching top or bottom of source.
+                         ;; move to end or beginning of source when reaching top or bottom of source.
                          helm-ff-search-library-in-sexp        t
-                                        ; search for library in `require' and `declare-function' sexp.
+                         ;; search for library in `require' and `declare-function' sexp.
                          helm-scroll-amount                    8
-                                        ; scroll 8 lines other window using M-<next>/M-<prior>
+                         ;; scroll 8 lines other window using M-<next>/M-<prior>
                          helm-ff-file-name-history-use-recentf t)))
+   (:name helm-descbinds
+          :after
+          (progn
+            (global-set-key (kbd "C-h b") 'helm-descbinds)))
 
    (:name projectile ;; manage projects and find files
           :after (progn
@@ -492,9 +496,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Themes;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Themes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   (:name spaceline)
+   (:name spaceline  ;; spacemacs mode line theme
+          :after (progn
+                   (set-face-background 'mode-line "#fe8109")
+                   (set-face-foreground 'mode-line "#fbf1c7")
+                   (require 'spaceline-config)
+                   (spaceline-spacemacs-theme)
+                   (setq spaceline-separator-dir-left '(left . left))
+                   (setq spaceline-separator-dir-right '(right . right))
+                   (setq powerline-default-separator 'wave)
+                   (spaceline-compile)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -655,7 +668,7 @@
       version-control t      ; Use version numbers on backups
       delete-old-versions t  ; Automatically delete excess backups
       kept-new-versions 20   ; how many of the newest versions to keep
-      kept-old-versions 5)    ; and how many of the old
+      kept-old-versions 5)   ; and how many of the old
 
 ;; column length
 (setq fill-column 80)
@@ -707,21 +720,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-theme 'gruvbox t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; modeline ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (add-to-list 'load-path "~/.emacs.d/powerline")
-;; (require 'powerline)
-;; (set-face-background 'powerline-active2 "#3c3836")
-;; (set-face-background 'powerline-active2 "#928374")
 (set-face-background 'mode-line "#fe8109")
 (set-face-foreground 'mode-line "#fbf1c7")
-;; spacemacs mode line theme
-(add-to-list 'load-path "~/.emacs.d/lisp/spaceline/")
-(require 'spaceline-config)
-(spaceline-spacemacs-theme)
-(setq spaceline-separator-dir-left '(left . left))
-(setq spaceline-separator-dir-right '(right . right))
-(setq powerline-default-separator 'wave)
-(spaceline-compile)
-
 ;;add git to powerline
 (vc-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
