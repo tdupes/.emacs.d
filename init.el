@@ -35,12 +35,14 @@
           :after (progn
                    (yas-global-mode 1)
                    (add-hook 'prog-mode-hook #'yas-minor-mode)
-                   (add-to-list 'yas/root-directory "~/.emacs.d/snippets/yasnippet-snippets")
-
+                   (setq yas-snippet-dirs
+                         (append yas-snippet-dirs
+                                 '("~/.emacs.d/my-snippets")))
                    (defun yas/org-very-safe-expand ()
                      (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
 
-                   (global-set-key (kbd "C-M-y") 'yas-expand)))
+                   (global-set-key (kbd "C-M-y") 'yas-expand)
+                   (yas-reload-all)))
 
 
    (:name magit ;; git meet emacs
