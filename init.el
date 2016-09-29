@@ -145,6 +145,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; elisp libraries;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    (:name dash)
+   (:name auto-compile ;; auto compile elisp if byte code exists
+          :after (progn
+                   (auto-compile-on-load-mode)
+                   (auto-compile-on-save-mode)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -354,22 +358,24 @@
    (:name tern
           :after (progn
                    (add-hook 'js-mode-hook (lambda ()
-                                             (tern-mode t)
-                                             (flymake-mode t)))
+                                             (tern-mode t)))
                    (defun delete-tern-process ()
                      "function to stop term"
                      (interactive)
                      (delete-process "Tern"))
                    ;; add tern to company. Not working, use C-M-I for now
                    (add-to-list 'company-backends 'company-tern)))
-   (:name nodejs-repl)    ;; javascript reply
-   (:name jshint-mode ;; error reporting for js
-          :after (progn
-                   (require 'flymake-jshint)))
+   (:name nodejs-repl) ;; javascript reply
+   (:name jshint-mode) ;; error reporting for js
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Python;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   (:name company-jedi)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; editing packages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -463,6 +469,18 @@
    (:name helm-projectile)
    (:name helm-c-flycheck)
    (:name dirtree)
+   (:name golden-ratio
+          :after (progn
+                   (eval-after-load "golden-ratio"
+                     '(add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p))
+
+                   (defun pl/helm-alive-p ()
+                     (and (boundp 'helm-alive-p)
+                          (symbol-value 'helm-alive-p)))
+                   (golden-ratio-mode 1))) ;; enlarges current buffer to golden ratio
+   (:name anzu
+          :afer (progn
+                  (global-anzu-mode +1))) ;; better searching, with info on modeline
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -484,7 +502,9 @@
                    (emms-standard)
                    (defvar dired-mplayer-program "/usr/bin/vlc")
                    (emms-default-players)))
-	 (:name pdf-tools) ;; better system for viewing pdf files
+	 (:name pdf-tools ;; better system for viewing pdf files
+          :after (progn
+                   (pdf-tools-install)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -509,7 +529,16 @@
                    (setq spaceline-separator-dir-left '(left . left))
                    (setq spaceline-separator-dir-right '(right . right))
                    (setq powerline-default-separator 'wave)
+                   (spaceline-toggle-erc-track-on)
                    (spaceline-compile)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org Extras ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   (:name org-pomodoro)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -681,17 +710,6 @@
 ;;make emacs camel case sensitive in programming environments
 (add-hook 'prog-mode-hook 'subword-mode)
 
-;; whitespace mode
-;; (add-hook 'prog-mode-hook 'whitespace-mode)
-;; (setq whitespace-style '
-;;       (face tabs spaces trailing newline
-;;             space-after-tab space-mark tab-mark))
-
-;; (whitespace-mode)
-;; (set-face-attribute 'whitespace-space nil :background 'nil)
-;; (whitespace-mode)
-;; end of whitespace mode
-
 ;; electric align
 (add-to-list 'load-path "~/.emacs.d/lisp/electric-align/")
 (require 'electric-align)
@@ -713,6 +731,7 @@
 (define-key help-mode-map (kbd "n") 'next-line)
 (define-key help-mode-map (kbd "p") 'previous-line)
 
+(which-function-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -803,20 +822,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'load-path "~/.emacs.d/auctex/")
 
+(require 'tex)
+(TeX-global-PDF-mode t)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq TeX-save-query nil)
 (setq TeX-PDF-mode t)
-
-(add-to-list
- `flymake-err-line-patterns
- '("Runaway argument?" nil nil nil))
-(defun flymake-get-tex-args (file-name)
-  (list "pdflatex_nobreak"
-        (list "-file-line-error" "-draftmode" "-interaction=nonstopmode" file-name)))
-
-(add-hook 'LaTeX-mode-hook 'flymake-mode)
-
 
 (load "auctex.el" nil t t) 
 (load "preview-latex.el" nil t t)
