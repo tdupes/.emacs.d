@@ -466,7 +466,8 @@
                    (projectile-global-mode)
                    (setq projectile-mode-line
                          '(:eval (format " Proj[%s]" (projectile-project-name))))))
-   (:name helm-projectile)
+   (:name helm-projectile
+          :after (helm-projectile-on))
    (:name helm-c-flycheck)
    (:name dirtree)
    (:name golden-ratio
@@ -671,6 +672,13 @@
 
 ;; Handy key definition
 (define-key global-map "\M-Q" 'unfill-paragraph)
+
+
+(defun init ()
+  "go to the init file"
+  (interactive)
+  (find-file user-init-file))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
