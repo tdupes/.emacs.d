@@ -40,3 +40,7 @@ backup/*
 emms/*
 
 eshell/*
+
+tramp
+
+elpa/archives/*

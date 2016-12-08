@@ -129,8 +129,9 @@
                                (setq term-buffer-maximum-size 10000)
                                (setq show-trailing-whitespace nil)
                                ;; better pasting in terminal
-                               (define-key term-raw-map (kbd "C-y") 'term-paste)))
-
+                               (define-key term-raw-map (kbd "C-y") 'term-paste)
+                               (define-key term-raw-map (kbd "C-c C-l") 'erase-buffer)))
+                   
                    (add-to-list 'term-bind-key-alist '("M-d" . term-send-forward-kill-word))
 									 (add-to-list 'term-bind-key-alist '("<escape>" . term-send-esc))
                    (add-to-list 'term-bind-key-alist '("<C-backspace>" . term-send-backward-kill-word))
@@ -360,7 +361,7 @@
                    (add-hook 'js-mode-hook (lambda ()
                                              (tern-mode t)))
                    (defun delete-tern-process ()
-                     "function to stop term"
+                     "function to stop tern"
                      (interactive)
                      (delete-process "Tern"))
                    ;; add tern to company. Not working, use C-M-I for now
@@ -375,7 +376,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Python;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   (:name company-jedi)
+   (:name elpy
+          :after (progn
+                   (elpy-enable)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; editing packages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -683,13 +686,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; aesthetics/settings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq inhibit-startup-message t) ;;get rid of the annoying start up page
-(global-hl-line-mode +1) ;;highlight current line
-(setq frame-title-format "%b") ;;always dispay filename as titlebar
+(global-hl-line-mode +1)         ;;highlight current line
+(setq frame-title-format "%b")   ;;always dispay filename as titlebar
 
 (toggle-scroll-bar -1)
 (menu-bar-mode -1)
@@ -699,8 +701,8 @@
 (setq indent-tabs-mode nil)
 (setq-default indent-tabs-mode nil)
 
-(setq-default tab-width 2)
-(setq tab-width 2)
+(setq-default tab-width 4)
+(setq tab-width 4)
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
       backup-by-copying t    ; Don't delink hardlinks
@@ -757,7 +759,7 @@
 
 ;; I prefer linux style/bsd over gnu style
 (setq c-default-style "bsd"
-      c-basic-offset 2)
+      c-basic-offset 4)
 
 (show-paren-mode 1) ; turn on paren match highlighting
 (setq show-paren-style 'mixed);highlight entire bracket exp
@@ -933,17 +935,18 @@
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
+              (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING" "CURRENT"))))
 
 (setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
+      (quote (("TODO" :foreground "#cc241d" :weight bold)
               ("NEXT" :foreground "blue" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
+              ("DONE" :foreground "#98971a" :weight bold)
               ("WAITING" :foreground "orange" :weight bold)
               ("HOLD" :foreground "magenta" :weight bold)
-              ("CANCELLED" :foreground "forest green" :weight bold)
-              ("MEETING" :foreground "forest green" :weight bold)
-              ("PHONE" :foreground "forest green" :weight bold))))
+              ("CANCELLED" :foreground "#98971a" :weight bold)
+              ("MEETING" :foreground "#98971a" :weight bold)
+              ("PHONE" :foreground "#98971a" :weight bold)
+              ("CURRENT" :foreground "#458588" :weight bold))))
 
 (setq org-use-fast-todo-selection t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
