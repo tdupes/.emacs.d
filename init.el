@@ -534,7 +534,8 @@
                    (setq spaceline-separator-dir-right '(right . right))
                    (setq powerline-default-separator 'wave)
                    (spaceline-toggle-erc-track-on)
-                   (spaceline-compile)))
+                   (spaceline-compile)
+                   (spaceline-toggle-minor-modes-off)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -689,9 +690,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; aesthetics/settings ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq inhibit-startup-message t) ;;get rid of the annoying start up page
-(global-hl-line-mode +1)         ;;highlight current line
-(setq frame-title-format "%b")   ;;always dispay filename as titlebar
+(setq inhibit-startup-message t) ; get rid of the annoying start up page
+(global-hl-line-mode +1)         ; highlight current line
+(setq frame-title-format "%b")   ; always dispay filename as titlebar
 
 (toggle-scroll-bar -1)
 (menu-bar-mode -1)
@@ -810,8 +811,9 @@
   '(define-key json-mode-map (kbd "C-c w b") 'web-beautify-js))
 (eval-after-load 'sgml-mode
   '(progn
-     (define-key web-mode-map (kbd "C-c w b") 'web-beautify-html)
-     (define-key web-mode-map (kbd "C-c f") 'open-in-firefox)))
+     (define-key sgml-mode-map (kbd "C-c w b") 'web-beautify-html)
+     (define-key sgml-mode-map (kbd "C-c w b") 'web-beautify-html)
+     (define-key sgml-mode-map (kbd "C-c f") 'open-in-firefox)))
 
 (eval-after-load 'css-mode
   '(define-key css-mode-map (kbd "C-c w b") 'web-beautify-css))
