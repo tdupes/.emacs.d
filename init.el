@@ -702,8 +702,11 @@
 (setq indent-tabs-mode nil)
 (setq-default indent-tabs-mode nil)
 
-(setq-default tab-width 4)
-(setq tab-width 4)
+(setq-default tab-width 2)
+(setq tab-width 2)
+(setq c-default-style "bsd"
+      c-basic-offset 2)
+
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
       backup-by-copying t    ; Don't delink hardlinks
@@ -757,11 +760,6 @@
 ;;add git to powerline
 (vc-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; I prefer linux style/bsd over gnu style
-(setq c-default-style "bsd"
-      c-basic-offset 4)
-
 (show-paren-mode 1) ; turn on paren match highlighting
 (setq show-paren-style 'mixed);highlight entire bracket exp
 
@@ -775,7 +773,8 @@
 ;; always add closing brackets and parens
 (electric-pair-mode 1) 
 
-(set-frame-font "DejaVu Sans Mono for Powerline-9" nil t)
+(set-frame-font "DejaVu Sans Mono for Powerline-7" nil t)
+(set-face-attribute 'mode-line nil :font "DejaVu Sans Mono for Powerline-7")
 
 ;;; set up unicode
 (prefer-coding-system                     'utf-8)
@@ -1081,3 +1080,11 @@
 
 ;; enable the erase-buffer function
 (put 'erase-buffer 'disabled nil)
+
+(require 'server)
+(if (not (server-running-p))
+    (server-start))
+
+;; load theme set by wal.
+(if (file-exists-p "~/.cache/wal/colors.el")
+    (load-file "~/.cache/wal/colors.el"))
