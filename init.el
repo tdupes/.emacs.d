@@ -418,9 +418,9 @@
                      "update the cursor to a hollow box if we are in god mode or a read
                       only buffer"
                      (setq cursor-type
-                           (if (or god-local-mode buffer-read-only)
-                               'hollow
-                             'box)))
+                           (cond (god-local-mode 'bar)
+                                 (buffer-read-only 'hollow)
+                                 (t 'box))))
 
                    (add-hook 'god-mode-enabled-hook 'my-update-cursor)
                    (add-hook 'god-mode-disabled-hook 'my-update-cursor)))
@@ -485,6 +485,9 @@
    (:name anzu
           :afer (progn
                   (global-anzu-mode +1))) ;; better searching, with info on modeline
+   (:name base16
+          :after (progn
+                  (require 'base16-theme)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -509,6 +512,15 @@
 	 (:name pdf-tools ;; better system for viewing pdf files
           :after (progn
                    (pdf-tools-install)))
+   (:name elfeed
+          :after (progn
+                   (load-file "~/.elfeed.el")
+                   (global-set-key (kbd "C-x w") 'elfeed)
+                   (setf url-queue-timeout 300)))
+   (:name ledger-mode
+          :after (progn
+                   (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
+))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -524,18 +536,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Themes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   (:name spaceline  ;; spacemacs mode line theme
-          :after (progn
-                   (set-face-background 'mode-line "#fe8109")
-                   (set-face-foreground 'mode-line "#fbf1c7")
-                   (require 'spaceline-config)
-                   (spaceline-spacemacs-theme)
-                   (setq spaceline-separator-dir-left '(left . left))
-                   (setq spaceline-separator-dir-right '(right . right))
-                   (setq powerline-default-separator 'wave)
-                   (spaceline-toggle-erc-track-on)
-                   (spaceline-compile)
-                   (spaceline-toggle-minor-modes-off)))
+   ;; (:name spaceline  ;; spacemacs mode line theme
+   ;;        :after (progn
+   ;;                 (set-face-background 'mode-line "#fe8109")
+   ;;                 (set-face-foreground 'mode-line "#fbf1c7")
+   ;;                 (require 'spaceline-config)
+   ;;                 (spaceline-spacemacs-theme)
+   ;;                 (setq spaceline-separator-dir-left '(left . left))
+   ;;                 (setq spaceline-separator-dir-right '(right . right))
+   ;;                 (setq powerline-default-separator 'wave)
+   ;;                 (spaceline-toggle-erc-track-on)
+   ;;                 (spaceline-compile)
+   ;;                 (spaceline-toggle-minor-modes-off)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -746,6 +758,12 @@
 (define-key help-mode-map (kbd "p") 'previous-line)
 
 (which-function-mode)
+
+;; recent file mode
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key "\C-x\ \C-r" 'recentf-open-files)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -753,10 +771,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Themes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-theme 'gruvbox t)
+;; (load-theme 'gruvbox t)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; modeline ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(set-face-background 'mode-line "#fe8109")
-(set-face-foreground 'mode-line "#fbf1c7")
+;; (set-face-background 'mode-line "#fe8109")
+;; (set-face-foreground 'mode-line "#fbf1c7")
 ;;add git to powerline
 (vc-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -773,8 +791,8 @@
 ;; always add closing brackets and parens
 (electric-pair-mode 1) 
 
-(set-frame-font "DejaVu Sans Mono for Powerline-7" nil t)
-(set-face-attribute 'mode-line nil :font "DejaVu Sans Mono for Powerline-7")
+(set-frame-font "DejaVu Sans Mono for Powerline-9" nil t)
+(set-face-attribute 'mode-line nil :font "DejaVu Sans Mono for Powerline-8")
 
 ;;; set up unicode
 (prefer-coding-system                     'utf-8)
@@ -916,7 +934,8 @@
             (org-indent-mode)
             (linum-on)))
 
-(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-coa" 'org-agenda)
+(global-set-key "\C-coc" 'org-capture)
 
 ;; TODO entry automatricall change to DONE when all children are done
 (defun org-summary-todo (n-done n-not-done)
@@ -939,17 +958,25 @@
               (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING" "CURRENT"))))
 
 (setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "#cc241d" :weight bold)
-              ("NEXT" :foreground "blue" :weight bold)
-              ("DONE" :foreground "#98971a" :weight bold)
-              ("WAITING" :foreground "orange" :weight bold)
-              ("HOLD" :foreground "magenta" :weight bold)
-              ("CANCELLED" :foreground "#98971a" :weight bold)
-              ("MEETING" :foreground "#98971a" :weight bold)
-              ("PHONE" :foreground "#98971a" :weight bold)
-              ("CURRENT" :foreground "#458588" :weight bold))))
+      (quote (("TODO" :foreground "red" :weight bold)
+              ("NEXT" :foreground "yellow" :weight bold)
+              ("DONE" :foreground "blue" :weight bold)
+              ("WAITING" :foreground "magenta" :weight bold)
+              ("HOLD" :foreground "green" :weight bold)
+              ("CANCELLED" :foreground "purple" :weight bold)
+              ("MEETING" :foreground "green" :weight bold)
+              ("PHONE"  :foreground "green" :weight bold)
+              ("CURRENT" :foreground "green" :weight bold))))
 
 (setq org-use-fast-todo-selection t)
+ (setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/org/TODO.org" "Tasks")
+             "* TODO %?\n  %i\n  %a")
+        ("j" "Journal" entry (file+datetree "~/org/journal.org")
+         "* %?\nEntered on %U\n  %i\n  %a")))
+
+;; used for org columns
+(setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1085,6 +1112,4 @@
 (if (not (server-running-p))
     (server-start))
 
-;; load theme set by wal.
-(if (file-exists-p "~/.cache/wal/colors.el")
-    (load-file "~/.cache/wal/colors.el"))
+(add-hook 'after-init-hook (load-file "~/.cache/wal/colors.el"))
