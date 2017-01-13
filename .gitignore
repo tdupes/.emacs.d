@@ -44,3 +44,9 @@ eshell/*
 tramp
 
 elpa/archives/*
+
+.org-id-locations
+ido.last
+newsticker/
+org-gcal/
+smex-items

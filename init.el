@@ -1,3 +1,5 @@
+(setq inhibit-x-resources t)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Package Manager;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -7,7 +9,6 @@
 (when (< emacs-major-version 24)
   (add-to-list 'package-archives 
                '("gnu" . "http://elpa.gnu.org/packages/")))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; el-get ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -46,44 +47,25 @@
 
 
    (:name magit ;; git meet emacs
-          :after (progn
-                   (global-set-key (kbd "C-x C-z") 'magit-status)))
+          :after
+          (progn
+            (global-set-key (kbd "C-x C-z") 'magit-status)))
 
    ;; code completion library
    (:name company-mode
-          :after (progn
-                   (global-company-mode)
-                   (global-set-key (kbd "<M-tab>") 'company-complete)
-                   (global-set-key (kbd "<backtab>") 'company-complete)
-                   (define-key global-map (kbd "C-.") 'company-files)
-
-                   (set-face-attribute 'company-tooltip nil
-                                       :background "#ebdbb2"
-                                       :foreground "#282828")
-                   (set-face-attribute 'company-scrollbar-bg nil
-                                       :background "#076678")
-
-                   (set-face-attribute 'company-scrollbar-fg nil
-                                       :background "#d65d0e")
-
-                   (set-face-attribute 'company-tooltip-common-selection nil
-                                       :background "#928374"
-                                       :foreground "#f9f5d7")
-
-                   (set-face-attribute 'company-tooltip-selection nil
-                                       :background "#928374"
-                                       :foreground "#f9f5d7")
-
-                   (set-face-attribute 'company-tooltip-common nil
-                                       :background "#79740e"
-                                       :foreground "#fbf1c7")))
+          :after
+          (progn
+            (global-company-mode)
+            (global-set-key (kbd "<M-tab>") 'company-complete)
+            (global-set-key (kbd "<backtab>") 'company-complete)
+            (define-key global-map (kbd "C-.") 'company-files)))
 
    (:name flycheck ; general error reporting library
           :after (progn
                    (global-flycheck-mode)
                    (defun nextError ()
-                     "universal error navigation, this goes to the next error in the
-                      buffer"
+                     "universal error navigation, this goes to
+                      the next error in the buffer"
                      (interactive)
                      (cond
                       ((bound-and-true-p flyspell-mode)
@@ -118,10 +100,10 @@
                    (global-set-key (kbd "M-p") 'prevError)))
    (:name multi-term ;; better version for running terminals in emacs
           :after (progn
-                   (setq multi-term-program "/bin/zsh")
+                   (setq multi-term-program "/bin/bash")
                    (global-set-key [(f10)] 'multi-term)
-                   (setq multi-term-program "/bin/zsh")
-                   (setq explicit-shell-file-name "/bin/zsh")
+                   (setq multi-term-program "/bin/bash")
+                   (setq explicit-shell-file-name "/bin/bash")
 
                    (add-hook 'term-mode-hook
                              (lambda ()
@@ -129,15 +111,25 @@
                                (setq term-buffer-maximum-size 10000)
                                (setq show-trailing-whitespace nil)
                                ;; better pasting in terminal
-                               (define-key term-raw-map (kbd "C-y") 'term-paste)
-                               (define-key term-raw-map (kbd "C-c C-l") 'erase-buffer)))
+                               (define-key term-raw-map (kbd "C-y")
+                                 'term-paste)
+                               (define-key term-raw-map (kbd "C-c C-l")
+                                 'erase-buffer)))
                    
-                   (add-to-list 'term-bind-key-alist '("M-d" . term-send-forward-kill-word))
-									 (add-to-list 'term-bind-key-alist '("<escape>" . term-send-esc))
-                   (add-to-list 'term-bind-key-alist '("<C-backspace>" . term-send-backward-kill-word))
-                   (add-to-list 'term-bind-key-alist '("<M-backspace>" . term-send-backward-kill-word))
-                   (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
-                   (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))))
+                   (add-to-list 'term-bind-key-alist
+                                '("M-d" . term-send-forward-kill-word))
+									 (add-to-list 'term-bind-key-alist 
+                                '("<escape>" . term-send-esc))
+                   (add-to-list 'term-bind-key-alist 
+                                '("<C-backspace>" .
+                                  term-send-backward-kill-word))
+                   (add-to-list 'term-bind-key-alist 
+                                '("<M-backspace>" .
+                                  term-send-backward-kill-word))
+                   (add-to-list 'term-bind-key-alist 
+                                '("M-[" . multi-term-prev))
+                   (add-to-list 'term-bind-key-alist 
+                                '("M-]" . multi-term-next))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -146,10 +138,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; elisp libraries;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    (:name dash)
-   (:name auto-compile ;; auto compile elisp if byte code exists
-          :after (progn
-                   (auto-compile-on-load-mode)
-                   (auto-compile-on-save-mode)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -157,56 +145,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; C/C++ packages;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   (:name irony-mode ; c++ code completion and error reporting
-          :after (progn
-                   (add-hook 'c++-mode-hook  'irony-mode)
-                   (add-hook 'c-mode-hook    'irony-mode)
-                   (add-hook 'objc-mode-hook 'irony-mode)
-
-                   ;; replace the `completion-at-point' and `complete-symbol' bindings in
-                   ;; irony-mode's buffers by irony-mode's function
-                   (defun my-irony-mode-hook ()
-                     (define-key irony-mode-map [remap completion-at-point]
-                       'irony-completion-at-point-async)
-                     (define-key irony-mode-map [remap complete-symbol]
-                       'irony-completion-at-point-async)
-                     (define-key irony-mode-map (kbd "C-c C-t") 'irony-get-type))
-
-                   (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-                   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
-                   (eval-after-load 'company
-                     '(add-to-list 'company-backends 'company-irony))
-
-                   (eval-after-load 'company
-                     '(add-to-list
-                       'company-backends '(company-irony-c-headers company-irony)))))
-   (:name rtags ;; better tagging system for c/c++
-          :after (progn
-                   (add-hook 'c-mode-common-hook 'rtags-start-process-unless-running)
-                   (add-hook 'c++-mode-common-hook 'rtags-start-process-unless-running)
-                   (push 'company-rtags company-backends)
-                   (setq rtags-autostart-diagnostics t)
-                   (setq rtags-completions-enabled t)))
-   (:name flycheck-irony
-          :after (progn
-                   (eval-after-load 'flycheck
-                     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-
-                   (setq flycheck-clang-language-standard "c++14")
-                   (setq flycheck-clang-args "-std=c++14")
-                   (setq irony-additional-clang-options '("-std=c++14" "-stdlib=libc++"))
-
-                   (add-hook 'c++-mode-hook
-                             (lambda()
-                               (setq flycheck-clang-language-standard "c++14")
-                               (setq flycheck-clang-args "-std=c++14")
-                               (setq irony-additional-clang-options '("-std=c++14" "-stdlib=libc++"))))))
+   (:name ggtags :after
+          (add-hook 'c-mode-common-hook
+                    (lambda ()
+                      (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                        (ggtags-mode 1)))))
    (:name clang-format
-          :after (progn
-                   (add-hook 'c++-mode-hook
-                             (lambda ()
-                               (define-key c++-mode-map (kbd "C-M-q") 'clang-format-region)))))
+          :after
+          (progn
+            (add-hook 'c++-mode-hook
+                      (lambda ()
+                        (define-key c++-mode-map (kbd "C-M-q")
+                          'clang-format-region)))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -220,7 +170,6 @@
           :after (progn
                    (setq eclim-executable "/opt/eclipse/eclim")
                    (setq eclim-eclipse-dirs "/opt/eclipse")
-                   ;; (setq eclimd-default-workspace "/home/thomasduplessis/Code/workspace")
                    (add-to-list 'load-path "~/.emacs.d/lisp/emacs-eclim")
                    (require 'eclim)
                    (require 'eclimd)
@@ -236,9 +185,12 @@
                    (global-set-key (kbd "<C-return>") 'company-complete-common)
                    (add-hook 'java-mode-hook
                              (lambda ()
-                               (define-key java-mode-map (kbd "<M-tab>") 'company-complete-common)
-                               (define-key java-mode-map (kbd "C-c C-f") 'eclim-java-find-declaration)
-                               (define-key java-mode-map (kbd "C-c C-r") 'eclim-java-find-references)))
+                               (define-key java-mode-map (kbd "<M-tab>")
+                                 'company-complete-common)
+                               (define-key java-mode-map (kbd "C-c C-f")
+                                 'eclim-java-find-declaration)
+                               (define-key java-mode-map (kbd "C-c C-r")
+                                 'eclim-java-find-references)))
 
                    (add-hook 'java-mode-hook
                              (lambda ()
@@ -268,34 +220,21 @@
                    (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 
                    (add-hook 'haskell-cabal-mode 'turn-on-haskell-indentation)
-                                        ; Add F8 key combination for going to imports block
+                   ;; Add F8 key combination for going to imports block
                    (eval-after-load 'haskell-mode
-                     '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
+                     '(define-key haskell-mode-map [f8]
+                        'haskell-navigate-imports))
 
                    (eval-after-load 'haskell-mode
                      '(progn
-                        ;; (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
-                        (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-file)
-                        (define-key haskell-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
-                        (define-key haskell-mode-map (kbd "C-c C-n C-t") 'haskell-process-do-type)
-                        (define-key haskell-mode-map (kbd "C-c C-n C-i") 'haskell-process-do-info)
-                        (define-key haskell-mode-map (kbd "C-c C-n C-c") 'haskell-process-cabal-build)
-                        (define-key haskell-mode-map (kbd "C-c C-n c") 'haskell-process-cabal)
-                        (define-key haskell-mode-map (kbd "SPC") 'haskell-mode-contextual-space)))
-                   (eval-after-load 'haskell-cabal
-                     '(progn
-                        (define-key haskell-cabal-mode-map (kbd "C-c C-z") 'haskell-interactive-switch)
-                        (define-key haskell-cabal-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
-                        (define-key haskell-cabal-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
-                        (define-key haskell-cabal-mode-map (kbd "C-c c") 'haskell-process-cabal)))
-
-                   (eval-after-load 'haskell-mode
-                     '(define-key haskell-mode-map (kbd "C-c C-o") 'haskell-compile))
-                   (eval-after-load 'haskell-cabal
-                     '(define-key haskell-cabal-mode-map (kbd "C-c C-o") 'haskell-compile))
-
-                   (define-key haskell-mode-map (kbd "<M-tab>") 'company-complete)
-
+                        ;; (define-key haskell-mode-map (kbd "C-c C-l")
+                        ;; 'haskell-process-load-or-reload)
+                        (define-key haskell-mode-map (kbd "C-c C-l")
+                          'haskell-process-load-file)
+                        (define-key haskell-mode-map (kbd "C-c C-z")
+                          'haskell-interactive-switch)
+                        (define-key haskell-mode-map (kbd "SPC")
+                          'haskell-mode-contextual-space)))
                    ;;pretty symbols for emacs
                    (setq haskell-font-lock-symbols t)))
    (:name ghc-mod
@@ -344,16 +283,19 @@
                    (setq web-mode-enable-current-element-highlight t)
                    (setq javascript-i4de4t-level 4) ; javascript-mode
                    (setq js-i4de4t-level 4) ; js-mode
-                   (setq web-mode-markup-i4de4t-offset 4) ; web-mode, html tag i4 html file
-                   (setq web-mode-css-i4de4t-offset 4) ; web-mode, css i4 html file
-                   (setq web-mode-code-i4de4t-offset 4) ; web-mode, js code i4 html file
+                   ;; web-mode, html tag i4 html file
+                   (setq web-mode-markup-i4de4t-offset 4)
+                   ;; web-mode, css i4 html file
+                   (setq web-mode-css-i4de4t-offset 4)
+                   ;; web-mode, js code i4 html file
+                   (setq web-mode-code-i4de4t-offset 4) 
                    (setq css-i4de4t-offset 4)))
    (:name company-web
           :after (progn
                    (add-to-list 'company-backends 'company-web-html)))
    (:name web-completion-data)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Javascript;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Javascript ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    ;; Javascript code completiong and error checking.
    (:name tern
@@ -374,11 +316,11 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Python;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Python ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   (:name elpy
-          :after (progn
-                   (elpy-enable)))
+   ;; (:name elpy
+   ;;        :after (progn
+   ;;                 (elpy-enable)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; editing packages ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -409,85 +351,6 @@
    (:name rainbow-delimiters    ;;; highlight unmatched parens
           :after (progn
                    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)))
-   ;; god mode
-   (:name god-mode
-          :after (progn
-                   (global-set-key (kbd "C-c g") 'god-local-mode)
-
-                   (defun my-update-cursor ()
-                     "update the cursor to a hollow box if we are in god mode or a read
-                      only buffer"
-                     (setq cursor-type
-                           (cond (god-local-mode 'bar)
-                                 (buffer-read-only 'hollow)
-                                 (t 'box))))
-
-                   (add-hook 'god-mode-enabled-hook 'my-update-cursor)
-                   (add-hook 'god-mode-disabled-hook 'my-update-cursor)))
-   (:name wrap-region
-          :after (progn
-                   (wrap-region-mode t)
-                   (wrap-region-add-wrapper "$" "$")
-                   (wrap-region-add-wrapper "{-" "-}" "#")
-                   (wrap-region-add-wrapper "/" "/" nil 'ruby-mode)
-                   (wrap-region-add-wrapper "/* " " */" "#" '(java-mode javascript-mode css-mode))
-                   (wrap-region-add-wrapper "`" "`" nil '(markdown-mode ruby-mode))))
-   (:name helm
-          :after (progn
-                   (require 'helm-config)
-                   (global-set-key (kbd "M-x") 'helm-M-x)
-                   (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-                   (global-unset-key (kbd "C-x C-f"))
-                   (global-set-key (kbd "C-x C-f") #'helm-find-files)
-                   (global-set-key (kbd "C-x b") 'helm-buffers-list) ;; gives alot more detail
-                   ;; (global-set-key (kbd "C-x C-b") 'list-buffers) not neccessary 
-                   (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-                   (helm-mode 1)
-                   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-                   (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-                   (define-key helm-map (kbd "C-z")  'helm-select-action)  ; list actions using C-z
-                   (define-key helm-map (kbd "M-n") 'helm-next-line)   ; let alt n be move down too
-                   (define-key helm-map (kbd "M-p") 'helm-previous-line)   ; let alt p be move up too
-
-                   (helm-autoresize-mode t)
-                   (setq helm-split-window-in-side-p           t
-                         ;; open helm buffer inside current window, not occupy whole other window
-                         helm-move-to-line-cycle-in-source     t
-                         ;; move to end or beginning of source when reaching top or bottom of source.
-                         helm-ff-search-library-in-sexp        t
-                         ;; search for library in `require' and `declare-function' sexp.
-                         helm-scroll-amount                    8
-                         ;; scroll 8 lines other window using M-<next>/M-<prior>
-                         helm-ff-file-name-history-use-recentf t)))
-   (:name helm-descbinds
-          :after
-          (progn
-            (global-set-key (kbd "C-h b") 'helm-descbinds)))
-
-   (:name projectile ;; manage projects and find files
-          :after (progn
-                   (projectile-global-mode)
-                   (setq projectile-mode-line
-                         '(:eval (format " Proj[%s]" (projectile-project-name))))))
-   (:name helm-projectile
-          :after (helm-projectile-on))
-   (:name helm-c-flycheck)
-   (:name dirtree)
-   (:name golden-ratio
-          :after (progn
-                   (eval-after-load "golden-ratio"
-                     '(add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p))
-
-                   (defun pl/helm-alive-p ()
-                     (and (boundp 'helm-alive-p)
-                          (symbol-value 'helm-alive-p)))
-                   (golden-ratio-mode 1))) ;; enlarges current buffer to golden ratio
-   (:name anzu
-          :afer (progn
-                  (global-anzu-mode +1))) ;; better searching, with info on modeline
-   (:name base16
-          :after (progn
-                  (require 'base16-theme)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -503,24 +366,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Other Packages;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   (:name emms ;; emacs multimedia system
-          :after (progn
-                   (require 'emms-setup)
-                   (emms-standard)
-                   (defvar dired-mplayer-program "/usr/bin/vlc")
-                   (emms-default-players)))
 	 (:name pdf-tools ;; better system for viewing pdf files
           :after (progn
                    (pdf-tools-install)))
-   (:name elfeed
-          :after (progn
-                   (load-file "~/.elfeed.el")
-                   (global-set-key (kbd "C-x w") 'elfeed)
-                   (setf url-queue-timeout 300)))
    (:name ledger-mode
           :after (progn
-                   (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
-))
+                   (add-to-list 'auto-mode-alist
+                                '("\\.ledger$" . ledger-mode))
+                   (eval-after-load 'ledger-mode
+                     '(define-key ledger-mode-map (kbd "C-M-i")
+                        'complete-symbol))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -528,26 +383,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Latex ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   (:name company-auctex)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Themes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-   ;; (:name spaceline  ;; spacemacs mode line theme
-   ;;        :after (progn
-   ;;                 (set-face-background 'mode-line "#fe8109")
-   ;;                 (set-face-foreground 'mode-line "#fbf1c7")
-   ;;                 (require 'spaceline-config)
-   ;;                 (spaceline-spacemacs-theme)
-   ;;                 (setq spaceline-separator-dir-left '(left . left))
-   ;;                 (setq spaceline-separator-dir-right '(right . right))
-   ;;                 (setq powerline-default-separator 'wave)
-   ;;                 (spaceline-toggle-erc-track-on)
-   ;;                 (spaceline-compile)
-   ;;                 (spaceline-toggle-minor-modes-off)))
+   (:name auctex
+          :after (progn
+                   (require 'tex)
+                   (TeX-global-PDF-mode t)
+                   (setq TeX-auto-save t)
+                   (setq TeX-parse-self t)
+                   (setq TeX-save-query nil)
+                   (setq TeX-PDF-mode t)))
+   (:name company-auctex
+          :after (progn
+                   (require 'company-auctex)
+                   (company-auctex-init)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -556,6 +403,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Org Extras ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
    (:name org-pomodoro)
+   (:name org-gcal
+          :after (progn
+                   (require 'org-gcal)
+                   (load-file "~/.org-gcal.el")
+                   (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync)))
+                   (add-hook
+                    'org-capture-after-finalize-hook
+                    (lambda () (org-gcal-sync)))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -629,16 +484,15 @@
 (global-set-key (kbd "C-c e") 'eval-and-replace)
 
 
-(defun repeatString(numTimes str)
-  (apply 'concat (make-list numTimes str)))
+(defun repeat-string(n str)
+  (apply 'concat (make-list n str)))
 
 (defun str-divide(len str)
   (/ len (length str)))
 
-
 ;; lil function to make little section titles in any language with comment
 ;; character
-(defun mkSectionTitle(title)
+(defun create-section-title(title)
   "creates a little title section with three lines, first line of
   all comment chars, the second is the title wrapped in comment
   chars and the third is all comment chars again"
@@ -648,14 +502,14 @@
              (length comment-end)))
          (fstAndThrdLn
           (concat
-           (repeatString numReptimes comment-start) comment-end "\n"))
+           (repeat-string numReptimes comment-start) comment-end "\n"))
          (titleLineCommentRepNum
           (/ (str-divide (- 80 (length title)) comment-start)
              2))
          (titleLine
-          (concat (repeatString titleLineCommentRepNum comment-start)
+          (concat (repeat-string titleLineCommentRepNum comment-start)
                   title
-                  (repeatString (- titleLineCommentRepNum
+                  (repeat-string (- titleLineCommentRepNum
                                    (length comment-end))
                                 comment-start)
                   comment-end
@@ -666,17 +520,17 @@
                     titleLine
                     fstAndThrdLn))))
 
-(defun endSection()
+(defun end-section-title()
   "ends a section created by 'mkSectionTitle"
   (interactive)
   (let* ((numReptimes
           (- (str-divide 80 comment-start) (length comment-end)))
-         (ln (concat (repeatString numReptimes comment-start)
+         (ln (concat (repeat-string numReptimes comment-start)
                      comment-end
                      "\n")))
     (end-of-line)
     (newline)
-    (insert (repeatString 3 ln))))
+    (insert (repeat-string 3 ln))))
 
 
 ;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
@@ -688,7 +542,6 @@
 
 ;; Handy key definition
 (define-key global-map "\M-Q" 'unfill-paragraph)
-
 
 (defun init ()
   "go to the init file"
@@ -706,9 +559,11 @@
 (global-hl-line-mode +1)         ; highlight current line
 (setq frame-title-format "%b")   ; always dispay filename as titlebar
 
-(toggle-scroll-bar -1)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
+;; make mark region a darker color.
+(set-face-attribute 'region nil :background "yellow")
+;; (toggle-scroll-bar -1)
+;; (menu-bar-mode -1)
+;; (tool-bar-mode -1)
 
 ;; use spaces instead of tabs
 (setq indent-tabs-mode nil)
@@ -736,16 +591,12 @@
 ;;make emacs camel case sensitive in programming environments
 (add-hook 'prog-mode-hook 'subword-mode)
 
-;; electric align
-(add-to-list 'load-path "~/.emacs.d/lisp/electric-align/")
-(require 'electric-align)
-(add-hook 'prog-mode-hook 'electric-align-mode)
-
 ;; winner mode, allows undoing and redoing window configurations
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
-
+(setq column-number-mode 1)
+(setq line-number-mode 1)
 ;; Set the fill column (column number to wrap text after) to 80, not 70
 (setq-default fill-column 80)
 
@@ -754,9 +605,7 @@
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   (cl-flet ((process-list ())) ad-do-it))
 
-(define-key help-mode-map (kbd "n") 'next-line)
-(define-key help-mode-map (kbd "p") 'previous-line)
-
+;; display which function the cursor is in on the modeline
 (which-function-mode)
 
 ;; recent file mode
@@ -764,19 +613,20 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+;; turn off abbrev mode
+(setq-default abbrev-mode nil)
+
+;;ido mode with M-x
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Themes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (load-theme 'gruvbox t)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; modeline ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (set-face-background 'mode-line "#fe8109")
-;; (set-face-foreground 'mode-line "#fbf1c7")
-;;add git to powerline
-(vc-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (show-paren-mode 1) ; turn on paren match highlighting
 (setq show-paren-style 'mixed);highlight entire bracket exp
@@ -786,13 +636,12 @@
 
 ;; no line numbers for doc view,
 (add-hook 'doc-view-mode-hook (lambda () (linum-mode -1)))
-(setq column-number-mode t);; Sets up column numbers
 
 ;; always add closing brackets and parens
 (electric-pair-mode 1) 
 
-(set-frame-font "DejaVu Sans Mono for Powerline-9" nil t)
-(set-face-attribute 'mode-line nil :font "DejaVu Sans Mono for Powerline-8")
+(set-frame-font "DejaVu Sans Mono-10" nil t)
+(set-face-attribute 'mode-line nil :font "DejaVu Sans Mono-8")
 
 ;;; set up unicode
 (prefer-coding-system                     'utf-8)
@@ -805,6 +654,10 @@
 (global-prettify-symbols-mode +1) ;; pretty symbols like lambda 
 
 (setq popup-use-optimized-column-computation nil)
+
+
+;;add git to powerline
+(vc-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -849,44 +702,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Latex;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path "~/.emacs.d/auctex/")
-
-(require 'tex)
-(TeX-global-PDF-mode t)
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq TeX-save-query nil)
-(setq TeX-PDF-mode t)
-
-(load "auctex.el" nil t t) 
-(load "preview-latex.el" nil t t)
-
-(add-to-list 'load-path "~/.emacs.d/lisp/company-auctex")
-(require 'company-auctex)
-(company-auctex-init)
-
-(defun deleteLatexGarbage()
+(defun delete-latex-garbage()
   (interactive)
   (shell-command-ignore-buffer "rm *.aux")
   (shell-command-ignore-buffer "rm *.out")
   (shell-command-ignore-buffer "rm *.log"))
-
-(defun deleteEmacsGarbage()
-  (interactive)
-  (shell-command-ignore-buffer "rm *~")
-  (shell-command-ignore-buffer "rm \#.*"))
 
 (defun shell-command-ignore-buffer (command)
   (with-temp-buffer
     (shell-command command t)))
 
 ;; assumes you are calling this in a .tex file
-(defun makeAndViewLatex()
+(defun make-and-view-latex()
   (interactive)
   (save-excursion
     (save-buffer)
     (shell-command-ignore-buffer (concat "pdflatex " (buffer-name)))
-    (deleteLatexGarbage)
+    (delete-latex-garbage)
     (let ((pdfname
            (concat (substring (buffer-name) 0 -4) ".pdf")))
       (if (get-buffer pdfname)
@@ -895,7 +727,7 @@
             (revert-buffer))
         (find-file pdfname)))))
 
-(define-key LaTeX-mode-map [(f5)] 'makeAndViewLatex)
+(define-key LaTeX-mode-map [(f5)] 'make-and-view-latex)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -939,7 +771,8 @@
 
 ;; TODO entry automatricall change to DONE when all children are done
 (defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  "Switch entry to DONE when all subentries are done, to TODO
+otherwise."
   (let (org-log-done org-log-states)   ; turn off logging
     (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
@@ -969,11 +802,13 @@
               ("CURRENT" :foreground "green" :weight bold))))
 
 (setq org-use-fast-todo-selection t)
- (setq org-capture-templates
+(setq org-capture-templates
       '(("t" "Todo" entry (file+headline "~/org/TODO.org" "Tasks")
              "* TODO %?\n  %i\n  %a")
         ("j" "Journal" entry (file+datetree "~/org/journal.org")
-         "* %?\nEntered on %U\n  %i\n  %a")))
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("a" "Appointment" entry (file  "~/org/agenda.org" )
+         "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")))
 
 ;; used for org columns
 (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
@@ -1039,25 +874,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;Dired Extensions;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;; Dired Extensions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (put 'dired-find-alternate-file 'disabled nil)
 (setq doc-view-resolution 300)
-(setq line-number-mode nil)
 (setq dired-listing-switches "-alh")
 (define-key dired-mode-map (kbd "C-x w") 'wdired-change-to-wdired-mode)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; rust ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq racer-rust-src-path "~/Code/rust/src/")
-(setq racer-cmd           "~/Code/racer/target/release/racer")
-(add-to-list 'load-path   "~/Code/racer/editors")
-(eval-after-load "rust-mode"
-  '(require 'racer))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1066,7 +888,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;C/C++;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; make h files use c++ mode
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)) 
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (define-key c++-mode-map (kbd "C-M-x c") 'compile)
+            (setq abbrev-mode nil)))
+
+(add-hook 'c-mode-hook
+          (lambda ()
+            (define-key c-mode-map (kbd "C-M-x c") 'compile)
+            (setq abbrev-mode nil)))
+(add-hook 'c++-mode-hook
+          (lambda()
+            (setq flycheck-clang-language-standard "c++14")
+            (setq flycheck-clang-args "-std=c++14")))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1084,26 +919,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;Proof Assitants;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(load-file "~/.emacs.d/ProofGeneral/generic/proof-site.el")
-(require 'proof-site) ;; Open .v files with Proof-General's coq-mode
-;; Load company-coq when opening Coq files
-(add-hook 'coq-mode-hook #'company-coq-initialize) 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Current Projects ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path "~/.emacs.d/lisp/current-project")
-(require 'current-project)
-(open-projects)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; load feeds for newsticker
+(if (file-exists-p "~/.feeds")
+    (load-file "~/.feeds"))
 
 ;; enable the erase-buffer function
 (put 'erase-buffer 'disabled nil)
@@ -1112,4 +930,4 @@
 (if (not (server-running-p))
     (server-start))
 
-(add-hook 'after-init-hook (load-file "~/.cache/wal/colors.el"))
+;; (add-hook 'after-init-hook (load-file "~/.cache/wal/colors.el"))
