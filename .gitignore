@@ -43,6 +43,7 @@ eshell/*
 
 tramp
 
+elpa/*
 elpa/archives/*
 
 .org-id-locations
@@ -50,3 +51,10 @@ ido.last
 newsticker/
 org-gcal/
 smex-items
+
+.ercrc.el
+
+.emacs.desktop
+bbdb
+bookmarks
+network-security.data

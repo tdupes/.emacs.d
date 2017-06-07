@@ -1,30 +1,27 @@
 This is My Emacs Configuration.
-
-* Things to download
-** Eclim
-** Racer
+* Packages required
+1) Eclim
+2) GNU Global
+3) ghc-mod
 * Features
+Almost all packages are retrieved through el-get.
 ** Java/JVM 
 *** Eclim
 ** Haskell
 *** ghc-mod
 ** C++/C
-*** Irony mode
-*** rtags
-** Rust
-*** Racer
-uses Racer for auto completion in Rust code
+- GGtags package (GNU Global) for finding references
+- clang-company for auto-complete
 ** LaTeX
 *** Auctex
 ** Elisp
 *** Custom Keys
 C-c C-f for finding a function
 ** Error Handling
-*** Flymake/FlyCheck
+*** FlyCheck
 You can jump the the previous and next error in your file with M-n/M-p,
 Works with flymake, eclim, flyspell, and flycheck
 ** Javascript
 *** Web-mode
 *** Tern
 *** Flymake
-
