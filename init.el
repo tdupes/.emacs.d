@@ -99,7 +99,7 @@
       (setq term-buffer-maximum-size 10000)
       (setq show-trailing-whitespace nil))
     (add-hook 'term-mode-hook 'my-term-hook)
-    (add-to-list 'term-bind-key-alis '("M-d" . term-send-forward-kill-word))
+    (add-to-list 'term-bind-key-alist '("M-d" . term-send-forward-kill-word))
     (add-to-list 'term-bind-key-alist '("<escape>" . term-send-esc))
     (add-to-list 'term-bind-key-alist '("<C-backspace>" . term-send-backward-kill-word))
     (add-to-list 'term-bind-key-alist '("<M-backspace>" . term-send-backward-kill-word))
@@ -119,6 +119,20 @@
               (format " P[%s]"
                       (projectile-project-name)))))
     (setq projectile-switch-project-action 'projectile-dired)))
+
+(use-package ido :ensure t
+  :defer nil
+      :config
+      (setq ido-enable-flex-matching t)
+      (setq ido-everywhere t)
+      (ido-mode 1))
+
+(use-package ido-ubiquitous :ensure t)
+
+(use-package ido-vertical-mode :ensure t
+  :config
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only))
 
 (use-package flx
   :ensure t
@@ -376,7 +390,6 @@
             (setq emms-source-file-default-directory "~/Music/")
             (emms-add-directory-tree "~/Music/")))
 
-(use-package ido-vertical-mode :ensure t)
 (use-package doom :ensure t
   :config (defun load-doom-theme ()
             "Load doom-one theme and turn on all features."
@@ -543,13 +556,6 @@
 (setq recentf-max-menu-items 50)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
-(ido-vertical-mode 1)
-
-(setq ido-vertical-define-keys 'C-n-and-C-p-only)
-
 (set-face-attribute 'region nil :background "yellow")
 
 (put 'erase-buffer 'disabled nil) ;; enable the erase-buffer function
@@ -607,8 +613,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Web ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/lisp/web-beautify")
-(require 'web-beautify) ;; Not necessary if using ELPA package
+;; (add-to-list 'load-path "~/.emacs.d/lisp/web-beautify")
+;; (require 'web-beautify) ;; Not necessary if using ELPA package
 (eval-after-load 'js-mode
   '(progn
      (define-key js-mode-map (kbd "C-c w b") 'web-beautify-js)
@@ -629,7 +635,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; git ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'git)
+;; (require 'git)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Spelling ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -731,16 +737,15 @@
     "Function for org hook."
     (interactive)
     (use-package yasnippet :ensure t)
+    (use-package ido :ensure t)
     (org-indent-mode)
     (subword-mode))
   (add-hook 'org-mode-hook 'my-org-hook)
   (setq org-startup-with-inline-images t)
 
-  (setq org-agenda-files '("~/org/agenda.org"
-                           "~/org/TODO.org"
-                           "~/org/shows.org"))
+  (setq org-agenda-files '("~/org/"))
 
-
+  (setq org-completion-use-ido t)
   (setq org-agenda-window-setup 'current-window)
 
   (setq org-todo-keywords
@@ -843,10 +848,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;; Dired Extensions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(put 'dired-find-alternate-file 'disabled nil)
-(setq doc-view-resolution 300)
-(setq dired-listing-switches "-alh")
-(define-key dired-mode-map (kbd "C-x w") 'wdired-change-to-wdired-mode)
+(use-package dired
+  :init (progn
+          (setq dired-listing-switches "-alh")
+          (put 'dired-find-alternate-file 'disabled nil))
+  :bind (:map dired-mode-map
+              ("C-x w" . wdired-change-to-wdired-mode)))
+
+;; (eval-after-load "dired"
+;;   (define-key dired-mode-map (kbd "C-x w") 'wdired-change-to-wdired-mode))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;C/C++;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -914,7 +925,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ERC ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(load "~/.emacs.d/.ercrc.el")
+;; (load "~/.emacs.d/.ercrc.el")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -946,6 +957,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(if (file-exists-p "~/extras.el")
+    (load-file "extras.el"))
+
 
 (org-agenda-list)
 
