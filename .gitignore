@@ -58,3 +58,6 @@ smex-items
 bbdb
 bookmarks
 network-security.data
+
+
+flycheck_init.el

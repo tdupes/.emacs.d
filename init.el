@@ -15,6 +15,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Package Manager ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'package)
+
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/"))
 (when (< emacs-major-version 24)
@@ -44,15 +45,14 @@
       (package-install p))))
 
 (require 'use-package)
-(eval-when-compile
-  (require 'use-package))
-
 
 (use-package company
   :ensure t
   :defer t
-  :bind (("<C-return>" . company-complete-common)
-         ("C-." . company-files))
+  :bind
+  (("<C-return>" . company-complete-common)
+   ("M-RET" . company-complete-common) ; for terminals that don't rec c-return
+   ("C-." . company-files))
   :init (global-company-mode))
 
 (use-package magit
@@ -160,7 +160,8 @@
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C-<" . mc/mark-all-like-this)))
 (use-package expand-region :ensure t
-             :bind ("C-=" . er/expand-region))
+  :bind ("C-=" . er/expand-region)
+  ("C-c =" . er/expand-region))         ; for terminal
 (use-package flyspell :ensure t)
 ;; highlight unmatched parens
 (use-package rainbow-delimiters
@@ -221,8 +222,10 @@
   :ensure t
   :bind (:map c++-mode-map
          ("C-M-q" . clang-format-region)
+         ("M-q" . clang-format-region)
          :map c-mode-map
-         ("C-M-q" . clang-format-region)))
+         ("C-M-q" . clang-format-region)
+         ("M-q" . clang-format-region)))
 
 (use-package doxymacs
   :defer t
@@ -363,7 +366,8 @@
 (use-package god-mode
   :ensure t
   :defer t
-  :bind ("<escape>" . god-local-mode)
+  :bind ("<escape>" . god-local-mode)   ;for terminal use
+  ("C-c g" . god-local-mode)
   :config (progn
             (defun my-update-cursor ()
               (setq cursor-type (if (or god-local-mode buffer-read-only)
@@ -551,10 +555,12 @@
 (setq confirm-kill-emacs 'y-or-n-p)     ; ask before qutting
 
 ;; recent file mode
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 50)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(use-package recentf
+  :bind ("\C-x\ \C-r" . recentf-open-files)
+  :config 
+  (recentf-mode 1)
+  (setq recentf-max-menu-items 100)
+  (setq recentf-max-saved-items 100))
 
 (set-face-attribute 'region nil :background "yellow")
 
@@ -958,7 +964,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (if (file-exists-p "~/extras.el")
-    (load-file "extras.el"))
+    (load-file "~/extras.el"))
 
 
 (org-agenda-list)
@@ -976,3 +982,17 @@
                  (message "Loading %s...done (%.3fs) [after-init]"
                           ,load-file-name elapsed)))
             t))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (doom emms pdf-tools god-mode ace-window solarized-theme neotree auctex markdown-mode ledger-mode ghc haskell-mode clang-format ggtags eclim popup paredit rainbow-delimiters expand-region multiple-cursors avy flx-ido flx ido-vertical-mode ido-ubiquitous projectile multi-term smex flycheck yasnippet magit company use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
