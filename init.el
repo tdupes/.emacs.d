@@ -788,6 +788,8 @@
   (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
   ;; (setq org-columns-default-format "%50ITEM(Task) %3PRIORITY %TAGS %10CLOCKSUM %16TIMESTAMP_IA")
 
+  (setq org-clock-mode-line-total 'current)
+
   (define-key org-mode-map (kbd "M-p") 'flyspell-goto-previous-error)
   (add-hook 'org-mode-hook (lambda()
                              (turn-on-flyspell)
@@ -813,9 +815,7 @@
      (screen . nil)
      (sh . t)
      (sql . nil)
-     (sqlite . t)))
-
-  )
+     (sqlite . t))))
 
 (defun new-note (class-name)
   (interactive "sEnter name of Class: ")
