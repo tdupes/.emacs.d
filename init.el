@@ -414,22 +414,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;; costum commands ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;unset the arrow helpers for movements cause im not a n00b
-(global-unset-key (kbd "<left>"))
-(global-unset-key (kbd "<right>"))
-(global-unset-key (kbd "<up>"))
-(global-unset-key (kbd "<down>"))
-
-(global-set-key (kbd "<right>")   'windmove-right)
-(global-set-key (kbd "<left>")    'windmove-left)
-(global-set-key (kbd "<up>")      'windmove-up)
-(global-set-key (kbd "<down>")    'windmove-down)
-
-(global-set-key (kbd "C-M-l")   'windmove-right)
-(global-set-key (kbd "C-M-h")    'windmove-left)
-(global-set-key (kbd "C-M-k")      'windmove-up)
-(global-set-key (kbd "C-M-j")    'windmove-down)
-
 (global-set-key (kbd "<C-up>")    'shrink-window)
 (global-set-key (kbd "<C-down>")  'enlarge-window)
 (global-set-key (kbd "<C-left>")  'shrink-window-horizontally)
