@@ -111,7 +111,7 @@
   :config
   (progn
     (projectile-global-mode)
-    (setq projectile-enable-caching t)
+    (setq projectile-enable-caching nil)
     (setq projectile-mode-line
           '(:eval
             (if (file-remote-p default-directory)
@@ -499,7 +499,7 @@
   (tool-bar-mode -1))
 
 (tool-bar-mode -1)
-;; (set-frame-font "Ubuntu Mono" nil t)
+;; (set-frame-font "Ubuntu Mono-14" nil t)
 
 ;; use spaces instead of tabs
 (setq indent-tabs-mode nil)
@@ -546,7 +546,7 @@
   (setq recentf-max-menu-items 100)
   (setq recentf-max-saved-items 100))
 
-(set-face-attribute 'region nil :background "yellow")
+;; (set-face-attribute 'region nil :background "yellow")
 
 (put 'erase-buffer 'disabled nil) ;; enable the erase-buffer function
 (require 'server)
@@ -559,10 +559,10 @@
 (show-paren-mode 1) ;; turn on paren match highlighting
 (setq show-paren-style 'mixed) ;; highlight entire bracket exp
 
-(load-file "~/.emacs.d/lisp/gruvbox-emacs/gruvbox.el")
-(add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/gruvbox-emacs")
+;; (load-file "~/.emacs.d/lisp/gruvbox-emacs/gruvbox.el")
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/gruvbox-emacs")
+;; (load-theme 'gruvbox-light t)
 
-(load-theme 'gruvbox-light t)
 (require 'linum)
 (add-hook 'prog-mode-hook 'linum-on)
 
@@ -573,8 +573,9 @@
 (electric-pair-mode 1) 
 
 (setq default-frame-alist '((width . 100) (height . 50)
-                            (font . "Ubuntu Mono")
-                            (menu-bar-lines . 1)))
+                            (font . "Ubuntu Mono-14")
+                            ;; (menu-bar-lines . 1)
+                            ))
 
 (setq initial-frame-alist default-frame-alist)
 
@@ -760,14 +761,20 @@
   (setq org-habit-graph-column 60)
   (setq org-use-fast-todo-selection t)
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/TODO.org" "General")
+        '(("t" "Todo" entry (file+headline "~/org/todo.org" "General")
            "* TODO %?\n  %i\n")
-          ("r" "Read" entry (file+headline "~/org/TODO.org" "Read")
+          ("r" "Read" entry (file+headline "~/org/todo.org" "Read")
            "* TODO %?\n:PROPERTIES:\n:Author:\n:Platform: Book\n:Bookmark:\n:END:")
           ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "* %?\nEntered on %U\n  %i\n  %a")
           ("a" "Appointment" entry (file  "~/org/agenda.org")
            "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")))
+
+  (setq org-refile-use-outline-path t)
+  (setq org-outline-path-complete-in-steps t)
+  (setq org-refile-allow-creating-parent-nodes nil)
+  (setq org-refile-targets '((nil :maxlevel . 9)
+                             (org-agenda-files :maxlevel . 9)))
 
   (setq org-columns-default-format "%50ITEM(Task) %10CLOCKSUM %16TIMESTAMP_IA")
   ;; (setq org-columns-default-format "%50ITEM(Task) %3PRIORITY %TAGS %10CLOCKSUM %16TIMESTAMP_IA")
