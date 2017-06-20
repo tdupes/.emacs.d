@@ -168,6 +168,30 @@
   :config (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   :ensure t)
 
+(use-package ibuffer
+  :ensure t
+  :init (setq ibuffer-show-empty-filter-groups nil)
+  :bind ("C-x C-b" . ibuffer)
+  :config (setq ibuffer-saved-filter-groups
+                '(("default"
+                   ("emacs-config" (or (filename . ".emacs.d")
+                                       (filename . "emacs-config")))
+                   ("dired" (mode . dired-mode))
+                   ("Org" (or (mode . org-mode)
+                              (filename . "OrgMode")))
+                   ("code" (or (mode . prog-mode)
+                               (filename . "Code")
+                               (mode . cc-mode)))
+                   ("Magit" (name . "\*magit"))
+                   ("ERC" (mode . erc-mode))
+                   ("Help" (or (name . "\*Help\*")
+                               (name . "\*Apropos\*")
+                               (name . "\*info\*"))))))
+  (defun my-ibuffer-hook ()
+    (ibuffer-auto-mode 1)
+    (ibuffer-switch-to-saved-filter-groups "default"))
+  (add-hook 'ibuffer-mode-hook 'my-ibuffer-hook))
+
 ;;; elisp
 (use-package paredit
   :ensure t
@@ -185,30 +209,31 @@
 (use-package popup :ensure t)
 
 ;;; java
-(use-package eclim
-  :ensure t
-  :bind (:map java-mode-map
-         ("C-c C-f" . eclim-java-find-declaration)
-         ("C-c C-r" . eclim-java-find-references)
-         :map scala-mode-map
-         ("C-c C-f" . eclim-scala-find-declaration))
-  :config (progn
-            (setq eclim-executable "/opt/eclipse/eclim")
-            (setq eclim-eclipse-dirs "/opt/eclipse")
-            (add-to-list 'load-path "~/.emacs.d/lisp/emacs-eclim")
-            (require 'eclim)
-            (require 'eclimd)
-            (setq help-at-pt-display-when-idle t)
-            (setq help-at-pt-timer-delay 0.1)
-            (help-at-pt-set-timer)
-            (require 'company-emacs-eclim)
-            (company-emacs-eclim-setup)
+;; (use-package eclim
+;;   :ensure t
+;;   :bind (:map java-mode-map
+;;          ("C-c C-f" . eclim-java-find-declaration)
+;;          ("C-c C-r" . eclim-java-find-references)
+;;          :map scala-mode-map
+;;          ("C-c C-f" . eclim-scala-find-declaration))
+;;   :config (progn
+;; 	    (use-package s :ensure t)
+;;             (setq eclim-executable "/opt/eclipse/eclim")
+;;             (setq eclim-eclipse-dirs "/opt/eclipse")
+;;             (add-to-list 'load-path "~/.emacs.d/lisp/emacs-eclim")
+;;             (require 'eclim)
+;;             (require 'eclimd)
+;;             (setq help-at-pt-display-when-idle t)
+;;             (setq help-at-pt-timer-delay 0.1)
+;;             (help-at-pt-set-timer)
+;;             (require 'company-emacs-eclim)
+;;             (company-emacs-eclim-setup)
 
-            (add-hook 'java-mode-hook 'eclim-mode)
-            (add-hook 'scala-mode-hook
-                      (lambda ()
-                        (scala-mode-feature-electric-mode)
-                        (eclim-mode)))))
+;;             (add-hook 'java-mode-hook 'eclim-mode)
+;;             (add-hook 'scala-mode-hook
+;;                       (lambda ()
+;;                         (scala-mode-feature-electric-mode)
+;;                         (eclim-mode)))))
 ;;; c++ 
 (use-package ggtags
   :ensure t
@@ -407,6 +432,9 @@
                     doom-one-brighter-modeline t
                     doom-one-brighter-comments t)
               (load-theme 'doom-one t))))
+
+(use-package go-mode
+  :ensure t)
 
 ;; extra lisp code should be in lisp directory of .emacs.d
 (add-to-list 'load-path "~/.emacs.d/lisp")
@@ -973,14 +1001,19 @@
                  (message "Loading %s...done (%.3fs) [after-init]"
                           ,load-file-name elapsed)))
             t))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
  '(package-selected-packages
    (quote
-    (doom emms pdf-tools god-mode ace-window solarized-theme neotree auctex markdown-mode ledger-mode ghc haskell-mode clang-format ggtags eclim popup paredit rainbow-delimiters expand-region multiple-cursors avy flx-ido flx ido-vertical-mode ido-ubiquitous projectile multi-term smex flycheck yasnippet magit company use-package))))
+    (ido-ubiquitous use-package solarized-theme smex rainbow-delimiters projectile pdf-tools paredit neotree multiple-cursors multi-term markdown-mode magit ledger-mode ido-vertical-mode highlight-indent-guides god-mode go-mode github-theme ghc ggtags flycheck flx-ido expand-region emms eclim ecb doom-themes doom company clang-format auctex ace-window))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
