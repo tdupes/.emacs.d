@@ -533,8 +533,8 @@
 (setq indent-tabs-mode nil)
 (setq-default indent-tabs-mode nil)
 
-(setq-default tab-width 8)
-(setq tab-width 8)
+(setq-default tab-width 4)
+(setq tab-width 4)
 (setq c-default-style "bsd"
       c-basic-offset 2)
 
