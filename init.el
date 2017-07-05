@@ -106,19 +106,19 @@
     (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
     (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))))
 
-(use-package projectile
-  :ensure t
-  :config
-  (progn
-    (projectile-global-mode)
-    (setq projectile-enable-caching nil)
-    (setq projectile-mode-line
-          '(:eval
-            (if (file-remote-p default-directory)
-                " Projectile"
-              (format " P[%s]"
-                      (projectile-project-name)))))
-    (setq projectile-switch-project-action 'projectile-dired)))
+;; (use-package projectile
+;;   :ensure t
+;;   :config
+;;   (progn
+;;     (projectile-global-mode)
+;;     (setq projectile-enable-caching nil)
+;;     (setq projectile-mode-line
+;;           '(:eval
+;;             (if (file-remote-p default-directory)
+;;                 " Projectile"
+;;               (format " P[%s]"
+;;                       (projectile-project-name)))))
+;;     (setq projectile-switch-project-action 'projectile-dired)))
 
 (use-package ido :ensure t
   :defer nil
@@ -179,14 +179,25 @@
                    ("dired" (mode . dired-mode))
                    ("Org" (or (mode . org-mode)
                               (filename . "OrgMode")))
-                   ("code" (or (mode . prog-mode)
-                               (filename . "Code")
-                               (mode . cc-mode)))
+                   ("c++" (or (filename . "*.cc")
+                              (mode . c++-mode)))
                    ("Magit" (name . "\*magit"))
                    ("ERC" (mode . erc-mode))
                    ("Help" (or (name . "\*Help\*")
                                (name . "\*Apropos\*")
                                (name . "\*info\*"))))))
+  ;; nearly all of this is the default layout
+  (setq ibuffer-formats 
+        '((mark modified read-only " "
+                (name 40 40 :left :elide) ; change: 30s were originally 18s
+                " "
+                (size 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " " filename-and-process)
+          (mark " "
+                (name 16 -1)
+                " " filename)))
   (defun my-ibuffer-hook ()
     (ibuffer-auto-mode 1)
     (ibuffer-switch-to-saved-filter-groups "default"))
@@ -419,18 +430,17 @@
             (setq emms-source-file-default-directory "~/Music/")
             (emms-add-directory-tree "~/Music/")))
 
-(use-package doom :ensure t
+(use-package doom-themes :ensure t
   :config (defun load-doom-theme ()
             "Load doom-one theme and turn on all features."
             (interactive)
             (progn
-              (require 'doom-themes)
-              (require 'doom-neotree)
+              (require 'doom)
               (setq org-fontify-whole-heading-line t
                     org-fontify-done-headline t
                     org-fontify-quote-and-verse-blocks t
                     doom-one-brighter-modeline t
-                    doom-one-brighter-comments t)
+                   doom-one-brighter-comments t)
               (load-theme 'doom-one t))))
 
 (use-package go-mode
@@ -527,7 +537,7 @@
   (tool-bar-mode -1))
 
 (tool-bar-mode -1)
-;; (set-frame-font "Ubuntu Mono-14" nil t)
+;; (set-frame-font "Inconsolata-18" nil t)
 
 ;; use spaces instead of tabs
 (setq indent-tabs-mode nil)
@@ -600,8 +610,8 @@
 ;; always add closing brackets and parens
 (electric-pair-mode 1) 
 
-(setq default-frame-alist '((width . 100) (height . 50)
-                            (font . "Ubuntu Mono-14")
+(setq default-frame-alist '((width . 85) (height . 40)
+                            (font . "Inconsolata-18")
                             ;; (menu-bar-lines . 1)
                             ))
 
@@ -762,14 +772,16 @@
   (add-hook 'org-mode-hook 'my-org-hook)
   (setq org-startup-with-inline-images t)
 
-  (setq org-agenda-files '("~/org/"))
+  (setq org-agenda-files-dir "~/Google Drive/org")
+
+  (setq org-agenda-files (list org-agenda-files-dir))
 
   (setq org-completion-use-ido t)
   (setq org-agenda-window-setup 'current-window)
 
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "WAITING(w)" "HOLD(h)" "|" "CANCELLED(c)")
+                (sequence "WAITING(w)"  "|" "HOLD(h)")
                 (sequence "PHONE" "MEETING" "|" "CANCELLED(c)"))))
 
   (setq org-todo-keyword-faces
@@ -789,13 +801,13 @@
   (setq org-habit-graph-column 60)
   (setq org-use-fast-todo-selection t)
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/todo.org" "General")
+        '(("t" "Todo" entry (file+headline (concat org-agenda-files-dir "todo.org")  "General")
            "* TODO %?\n  %i\n")
-          ("r" "Read" entry (file+headline "~/org/todo.org" "Read")
+          ("r" "Read" entry (file+headline (concat org-agenda-files-dir "todo.org") "Read")
            "* TODO %?\n:PROPERTIES:\n:Author:\n:Platform: Book\n:Bookmark:\n:END:")
-          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+          ("j" "Journal" entry (file+datetree (concat org-agenda-files-dir "journal.org"))
            "* %?\nEntered on %U\n  %i\n  %a")
-          ("a" "Appointment" entry (file  "~/org/agenda.org")
+          ("a" "Appointment" entry (file  (concat org-agenda-files-dir "agenda.org"))
            "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")))
 
   (setq org-refile-use-outline-path t)
@@ -1014,21 +1026,14 @@
                           ,load-file-name elapsed)))
             t))
 
+(defalias 'yes-or-no-p 'y-or-n-p)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
- '(package-selected-packages
-   (quote
-    (ido-ubiquitous use-package solarized-theme smex rainbow-delimiters projectile pdf-tools paredit neotree multiple-cursors multi-term markdown-mode magit ledger-mode ido-vertical-mode highlight-indent-guides god-mode go-mode github-theme ghc ggtags flycheck flx-ido expand-region emms eclim ecb doom-themes doom company clang-format auctex ace-window))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(defun revert-all-buffers ()
+  "Revert all open buffers."
+  (interactive)
+  (dolist (buffer (buffer-list) (message "Refreshed open files"))
+    (when (and (buffer-file-name buffer) 
+               (not (buffer-modified-p buffer))) 
+      (set-buffer buffer)
+      (revert-buffer t t t)
+      (message (concat "reverted buffer " (buffer-file-name))))))
