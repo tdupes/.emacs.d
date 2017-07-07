@@ -80,6 +80,32 @@
   :ensure t
   :bind ("M-x" . smex))
 
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode 1)
+  (defun scroll-down-one-keep-line ()
+    "Scroll the page one line down."
+    (interactive)
+    (next-line)
+    (scroll-up-command 1))
+  (defun scroll-up-one-keep-line ()
+    "Scroll the page one line down."
+    (interactive)
+    (previous-line)
+    (scroll-down-command 1))
+
+  (define-key evil-normal-state-map (kbd "o") 'ace-window)
+  (define-key evil-normal-state-map (kbd "M-o") 'open-line)
+  (define-key evil-normal-state-map (kbd "g b") 'ido-switch-buffer)
+  (define-key evil-normal-state-map (kbd "g f") 'ido-find-file)
+  (define-key evil-normal-state-map (kbd "SPC 1") 'delete-other-windows)
+  (define-key evil-normal-state-map (kbd "SPC 0") 'delete-window)
+  (define-key evil-normal-state-map (kbd "SPC e") 'eval-last-sexp)
+  (define-key evil-normal-state-map (kbd "SPC =") 'er/expand-region)
+  (define-key evil-normal-state-map (kbd "M-n") 'scroll-down-one-keep-line)
+  (define-key evil-normal-state-map (kbd "M-p") 'scroll-up-one-keep-line))
+
 (use-package multi-term ;; better version for running terminals in emacs
   :ensure t
   :bind (("<f10>" . multi-term)
@@ -186,7 +212,6 @@
                    ("Help" (or (name . "\*Help\*")
                                (name . "\*Apropos\*")
                                (name . "\*info\*"))))))
-<<<<<<< HEAD
   ;; nearly all of this is the default layout
   (setq ibuffer-formats 
         '((mark modified read-only " "
@@ -199,20 +224,6 @@
           (mark " "
                 (name 16 -1)
                 " " filename)))
-=======
-  (setq ibuffer-formats 
-      '((mark modified read-only " "
-              (name 30 30 :left :elide) ; change: 30s were originally 18s
-              " "
-              (size 9 -1 :right)
-              " "
-              (mode 16 16 :left :elide)
-              " " filename-and-process)
-        (mark " "
-              (name 16 -1)
-              " " filename)))
-
->>>>>>> 8df3a51
   (defun my-ibuffer-hook ()
     (ibuffer-auto-mode 1)
     (ibuffer-switch-to-saved-filter-groups "default"))
@@ -414,18 +425,18 @@
   :ensure t
   :defer t
   :bind ("C-x o" . ace-window))
-(use-package god-mode
-  :ensure t
-  :defer t
-  :bind ("<escape>" . god-local-mode)   ;for terminal use
-  ("C-c g" . god-local-mode)
-  :config (progn
-            (defun my-update-cursor ()
-              (setq cursor-type (if (or god-local-mode buffer-read-only)
-                                    'hollow
-                                  'box)))
-            (add-hook 'god-mode-enabled-hook 'my-update-cursor)
-            (add-hook 'god-mode-disabled-hook 'my-update-cursor)))
+;; (use-package god-mode
+;;   :ensure t
+;;   :defer t
+;;   :bind ("<escape>" . god-local-mode)   ;for terminal use
+;;   ("C-c g" . god-local-mode)
+;;   :config (progn
+;;             (defun my-update-cursor ()
+;;               (setq cursor-type (if (or god-local-mode buffer-read-only)
+;;                                     'hollow
+;;                                   'box)))
+;;             (add-hook 'god-mode-enabled-hook 'my-update-cursor)
+;;             (add-hook 'god-mode-disabled-hook 'my-update-cursor)))
 (use-package pdf-tools
        :defer t
        :ensure t
@@ -553,11 +564,7 @@
   (tool-bar-mode -1))
 
 (tool-bar-mode -1)
-<<<<<<< HEAD
 ;; (set-frame-font "Inconsolata-18" nil t)
-=======
-;; (set-frame-font "Inconsolata-16" nil t)
->>>>>>> 8df3a51
 
 ;; use spaces instead of tabs
 (setq indent-tabs-mode nil)
@@ -621,8 +628,8 @@
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/gruvbox-emacs")
 ;; (load-theme 'gruvbox-light t)
 
-(require 'linum)
-(add-hook 'prog-mode-hook 'linum-on)
+;; (require 'linum)
+;; (add-hook 'prog-mode-hook 'linum-on)
 
 ;; no line numbers for doc view,
 (add-hook 'doc-view-mode-hook (lambda () (linum-mode -1)))
@@ -630,14 +637,10 @@
 ;; always add closing brackets and parens
 (electric-pair-mode 1) 
 
-<<<<<<< HEAD
 (setq default-frame-alist '((width . 85) (height . 40)
                             (font . "Inconsolata-18")
                             ;; (menu-bar-lines . 1)
                             ))
-=======
-(setq default-frame-alist '((font . "Inconsolata-16")))
->>>>>>> 8df3a51
 
 (setq initial-frame-alist default-frame-alist)
 
@@ -796,7 +799,7 @@
   (add-hook 'org-mode-hook 'my-org-hook)
   (setq org-startup-with-inline-images t)
 
-  (setq org-agenda-files-dir "~/Google Drive/org")
+  (setq org-agenda-files-dir "~/Google Drive/org/")
 
   (setq org-agenda-files (list org-agenda-files-dir))
 
@@ -826,7 +829,7 @@
   (setq org-use-fast-todo-selection t)
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline (concat org-agenda-files-dir "todo.org")  "General")
-           "* TODO %?\n  %i\n")
+           "* TODO %?\n  %i\n  %a")
           ("r" "Read" entry (file+headline (concat org-agenda-files-dir "todo.org") "Read")
            "* TODO %?\n:PROPERTIES:\n:Author:\n:Platform: Book\n:Bookmark:\n:END:")
           ("j" "Journal" entry (file+datetree (concat org-agenda-files-dir "journal.org"))
@@ -1034,7 +1037,7 @@
     (load-file "~/extras.el"))
 
 
-(org-agenda-list)
+(org-todo-list)
 
 ;; print out loading time.
 (when window-system
