@@ -52,7 +52,10 @@
   :bind
   (("<C-return>" . company-complete-common)
    ("M-RET" . company-complete-common) ; for terminals that don't rec c-return
-   ("C-." . company-files))
+   ("C-." . company-files)
+   :map company-active-map
+   ("C-s" . company-select-next)
+   ("C-p" . company-select-previous))
   :init (global-company-mode))
 
 (use-package magit
@@ -80,31 +83,45 @@
   :ensure t
   :bind ("M-x" . smex))
 
-(use-package evil
-  :ensure t
-  :config
-  (evil-mode 1)
-  (defun scroll-down-one-keep-line ()
-    "Scroll the page one line down."
-    (interactive)
-    (next-line)
-    (scroll-up-command 1))
-  (defun scroll-up-one-keep-line ()
-    "Scroll the page one line down."
-    (interactive)
-    (previous-line)
-    (scroll-down-command 1))
+;; (use-package evil
+;;   :ensure t
+;;   :config
+;;   (evil-mode 1)
+;;   (defun scroll-down-one-keep-line ()
+;;     "Scroll the page one line down."
+;;     (interactive)
+;;     (forward-line 1)
+;;     (scroll-up-command 1))
+;;   (defun scroll-up-one-keep-line ()
+;;     "Scroll the page one line down."
+;;     (interactive)
+;;     (forward-line -1)
+;;     (scroll-down-command 1))
 
-  (define-key evil-normal-state-map (kbd "o") 'ace-window)
-  (define-key evil-normal-state-map (kbd "M-o") 'open-line)
-  (define-key evil-normal-state-map (kbd "g b") 'ido-switch-buffer)
-  (define-key evil-normal-state-map (kbd "g f") 'ido-find-file)
-  (define-key evil-normal-state-map (kbd "SPC 1") 'delete-other-windows)
-  (define-key evil-normal-state-map (kbd "SPC 0") 'delete-window)
-  (define-key evil-normal-state-map (kbd "SPC e") 'eval-last-sexp)
-  (define-key evil-normal-state-map (kbd "SPC =") 'er/expand-region)
-  (define-key evil-normal-state-map (kbd "M-n") 'scroll-down-one-keep-line)
-  (define-key evil-normal-state-map (kbd "M-p") 'scroll-up-one-keep-line))
+;;   (define-key evil-motion-state-map (kbd "o") 'ace-window)
+;;   (define-key evil-motion-state-map (kbd "M-o") 'open-line)
+;;   (define-key evil-motion-state-map (kbd "g b") 'ido-switch-buffer)
+;;   (define-key evil-motion-state-map (kbd "g f") 'ido-find-file)
+;;   (define-key evil-motion-state-map (kbd "M-n") 'scroll-down-one-keep-line)
+;;   (define-key evil-motion-state-map (kbd "M-p") 'scroll-up-one-keep-line)
+
+;;   (define-key evil-normal-state-map (kbd "SPC b") 'google3-build)
+;;   (define-key evil-normal-state-map (kbd "SPC c") 'google3-build-cleaner)
+;;   (define-key evil-normal-state-map (kbd "SPC t") 'google3-test)
+;;   (define-key evil-normal-state-map (kbd "SPC r") 'google3-run)
+ 
+;;   (define-key evil-normal-state-map (kbd "o") 'ace-window)
+;;   (define-key evil-normal-state-map (kbd "M-o") 'open-line)
+;;   (define-key evil-normal-state-map (kbd "g b") 'ido-switch-buffer)
+;;   (define-key evil-normal-state-map (kbd "g f") 'ido-find-file)
+;;   (define-key evil-normal-state-map (kbd "SPC 1") 'delete-other-windows)
+;;   (define-key evil-normal-state-map (kbd "SPC 2") 'split-window-below)
+;;   (define-key evil-normal-state-map (kbd "SPC 0") 'delete-window)
+;;   (define-key evil-normal-state-map (kbd "SPC 3") 'split-window-right)
+;;   (define-key evil-normal-state-map (kbd "SPC e") 'eval-last-sexp)
+;;   (define-key evil-normal-state-map (kbd "SPC =") 'er/expand-region)
+;;   (define-key evil-normal-state-map (kbd "s-n") 'scroll-down-one-keep-line)
+;;   (define-key evil-normal-state-map (kbd "s-p") 'scroll-up-one-keep-line))
 
 (use-package multi-term ;; better version for running terminals in emacs
   :ensure t
@@ -132,20 +149,6 @@
     (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
     (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))))
 
-;; (use-package projectile
-;;   :ensure t
-;;   :config
-;;   (progn
-;;     (projectile-global-mode)
-;;     (setq projectile-enable-caching nil)
-;;     (setq projectile-mode-line
-;;           '(:eval
-;;             (if (file-remote-p default-directory)
-;;                 " Projectile"
-;;               (format " P[%s]"
-;;                       (projectile-project-name)))))
-;;     (setq projectile-switch-project-action 'projectile-dired)))
-
 (use-package ido :ensure t
   :defer nil
       :config
@@ -153,7 +156,7 @@
       (setq ido-everywhere t)
       (ido-mode 1))
 
-(use-package ido-ubiquitous :ensure t)
+(use-package ido-completing-read+ :ensure t)
 
 (use-package ido-vertical-mode :ensure t
   :config
@@ -179,6 +182,7 @@
               ("M-g f" . avy-goto-line)
               ("M-g e" . avy-goto-word-0))
              :config (avy-setup-default))
+
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-c C-S-c" . mc/edit-lines)
@@ -207,6 +211,10 @@
                               (filename . "OrgMode")))
                    ("c++" (or (filename . "*.cc")
                               (mode . c++-mode)))
+                   ("proto" (or (mode . protobuf-mode)
+                                (filename . "*.proto")))
+                   ("terminal" (or (mode . term-mode)
+                                   (filename . "*terminal*")))
                    ("Magit" (name . "\*magit"))
                    ("ERC" (mode . erc-mode))
                    ("Help" (or (name . "\*Help\*")
@@ -215,7 +223,7 @@
   ;; nearly all of this is the default layout
   (setq ibuffer-formats 
         '((mark modified read-only " "
-                (name 40 40 :left :elide) ; change: 30s were originally 18s
+                (name 30 30 :left :elide) ; change: 30s were originally 18s
                 " "
                 (size 9 -1 :right)
                 " "
@@ -272,13 +280,13 @@
 ;;                         (scala-mode-feature-electric-mode)
 ;;                         (eclim-mode)))))
 ;;; c++ 
-(use-package ggtags
-  :ensure t
-  :config
-          (add-hook 'c-mode-common-hook
-                    (lambda ()
-                      (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-                        (ggtags-mode 1)))))
+;; (use-package ggtags
+;;   :ensure t
+;;   :config
+;;           (add-hook 'c-mode-common-hook
+;;                     (lambda ()
+;;                       (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+;;                         (ggtags-mode 1)))))
 (use-package clang-format
   :defer t
   :ensure t
@@ -288,14 +296,6 @@
          :map c-mode-map
          ("C-M-q" . clang-format-region)
          ("M-q" . clang-format-region)))
-
-(use-package doxymacs
-  :defer t
-  :config
-  (add-hook 'c-mode-common-hook
-            (lambda ()
-              (doxymacs-mode t)
-              (doxymacs-font-lock))))
 
 ;;; haskell
 (use-package haskell-mode
@@ -330,6 +330,7 @@
     (setq ghc-debug t)
     (use-package company-ghc
       :config (add-to-list 'company-backends 'company-ghc))))
+
 ;;; sml-mode
 (use-package sml-mode)
 
@@ -362,12 +363,6 @@
     (use-package web-completion-data
       :ensure t)))
 
-;;; other modes
-(use-package ledger-mode
-  :ensure t
-  :bind (:map ledger-mode-map ("C-M-i" . complete-symbol)))
-(add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
-
 (use-package markdown-mode
   :ensure t)
 
@@ -398,8 +393,6 @@
     :config
     (use-package preview)
     (add-hook 'LaTeX-mode-hook 'reftex-mode)))
-(use-package tex-site
-  :mode ("\\.tex\\'" . TeX-latex-mode))
 (use-package auctex
   :defer t
   :ensure t
@@ -421,26 +414,9 @@
 (use-package solarized-theme
   :ensure t
   :defer t)
-(use-package ace-window
+(use-package gruvbox-theme
   :ensure t
-  :defer t
-  :bind ("C-x o" . ace-window))
-;; (use-package god-mode
-;;   :ensure t
-;;   :defer t
-;;   :bind ("<escape>" . god-local-mode)   ;for terminal use
-;;   ("C-c g" . god-local-mode)
-;;   :config (progn
-;;             (defun my-update-cursor ()
-;;               (setq cursor-type (if (or god-local-mode buffer-read-only)
-;;                                     'hollow
-;;                                   'box)))
-;;             (add-hook 'god-mode-enabled-hook 'my-update-cursor)
-;;             (add-hook 'god-mode-disabled-hook 'my-update-cursor)))
-(use-package pdf-tools
-       :defer t
-       :ensure t
-       :config (pdf-tools-install))
+  :defer t)
 
 (use-package emms
   :ensure t
@@ -455,19 +431,6 @@
                     emms-player-mplayer))
             (setq emms-source-file-default-directory "~/Music/")
             (emms-add-directory-tree "~/Music/")))
-
-(use-package doom-themes :ensure t
-  :config (defun load-doom-theme ()
-            "Load doom-one theme and turn on all features."
-            (interactive)
-            (progn
-              (require 'doom)
-              (setq org-fontify-whole-heading-line t
-                    org-fontify-done-headline t
-                    org-fontify-quote-and-verse-blocks t
-                    doom-one-brighter-modeline t
-                   doom-one-brighter-comments t)
-              (load-theme 'doom-one t))))
 
 (use-package go-mode
   :ensure t
@@ -559,12 +522,8 @@
 
 (toggle-scroll-bar 1)
 (size-indication-mode)
-(unless (display-graphic-p)
-  (menu-bar-mode -1)
-  (tool-bar-mode -1))
 
-(tool-bar-mode -1)
-;; (set-frame-font "Inconsolata-18" nil t)
+;; (set-frame-font "Inconsolata-14" nil t)
 
 ;; use spaces instead of tabs
 (setq indent-tabs-mode nil)
@@ -601,8 +560,6 @@
 ;;; Set the fill column (column number to wrap text after) to 80, not 70
 (setq-default fill-column 80)
 
-(setq confirm-kill-emacs 'y-or-n-p)     ; ask before qutting
-
 ;; recent file mode
 (use-package recentf
   :bind ("\C-x\ \C-r" . recentf-open-files)
@@ -626,10 +583,10 @@
 
 ;; (load-file "~/.emacs.d/lisp/gruvbox-emacs/gruvbox.el")
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/gruvbox-emacs")
-;; (load-theme 'gruvbox-light t)
+(load-theme 'gruvbox-light-medium t)
 
-;; (require 'linum)
-;; (add-hook 'prog-mode-hook 'linum-on)
+(require 'linum)
+(add-hook 'prog-mode-hook 'linum-on)
 
 ;; no line numbers for doc view,
 (add-hook 'doc-view-mode-hook (lambda () (linum-mode -1)))
@@ -638,22 +595,11 @@
 (electric-pair-mode 1) 
 
 (setq default-frame-alist '((width . 85) (height . 40)
-                            (font . "Inconsolata-18")
+                            (font . "Inconsolata-14")
                             ;; (menu-bar-lines . 1)
                             ))
 
 (setq initial-frame-alist default-frame-alist)
-
-;;; set up unicode
-(prefer-coding-system                     'utf-8)
-(set-default-coding-systems               'utf-8)
-(set-terminal-coding-system               'utf-8)
-(set-keyboard-coding-system               'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
-(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-
-;; pretty symbols
-;; (global-prettify-symbols-mode -1)
 
 (setq popup-use-optimized-column-computation nil)
 
@@ -808,12 +754,12 @@
 
   (setq org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "WAITING(w)"  "|" "HOLD(h)")
-                (sequence "PHONE" "MEETING" "|" "CANCELLED(c)"))))
+                (sequence "WAITING(w)" "HOLD(h)" "PHONE" "MEETING" "|"
+                          "CANCELLED(c)"))))
 
   (setq org-todo-keyword-faces
         (quote (("TODO"      :foreground "red"     :weight bold)
-                ("NEXT"      :foreground "yellow"  :weight bold)
+                ("NEXT"      :foreground "orange"  :weight bold)
                 ("WAITING"   :foreground "magenta" :weight bold)
                 ("HOLD"      :foreground "green"   :weight bold)
                 ("CANCELLED" :foreground "purple"  :weight bold)
@@ -828,7 +774,7 @@
   (setq org-habit-graph-column 60)
   (setq org-use-fast-todo-selection t)
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline (concat org-agenda-files-dir "todo.org")  "General")
+        '(("t" "Todo" entry (file (concat org-agenda-files-dir "todo.org"))
            "* TODO %?\n  %i\n  %a")
           ("r" "Read" entry (file+headline (concat org-agenda-files-dir "todo.org") "Read")
            "* TODO %?\n:PROPERTIES:\n:Author:\n:Platform: Book\n:Bookmark:\n:END:")
@@ -879,7 +825,7 @@
      (ledger . t)
      (ocaml . nil)
      (octave . t)
-     (org . t)  ;; VIP!
+     (org . t) ;; VIP!
      (python . t)
      (ruby . t)
      (screen . nil)
@@ -1036,9 +982,6 @@
 (if (file-exists-p "~/extras.el")
     (load-file "~/extras.el"))
 
-
-(org-todo-list)
-
 ;; print out loading time.
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
@@ -1062,5 +1005,27 @@
     (when (and (buffer-file-name buffer) 
                (not (buffer-modified-p buffer))) 
       (set-buffer buffer)
-      (revert-buffer t t t)
-      (message (concat "reverted buffer " (buffer-file-name))))))
+      (revert-buffer t t t))))
+
+(load-theme 'gruvbox-light-medium t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(compilation-error-regexp-alist
+   (quote
+    (google3-build-log-parser-info google3-build-log-parser-warning google3-build-log-parser-error google-blaze-error google-log-error google-log-warning google-log-info google-log-fatal-message google-forge-python gunit-stack-trace absoft ada aix ant bash borland python-tracebacks-and-caml comma cucumber msft edg-1 edg-2 epc ftnchek iar ibm irix java jikes-file maven jikes-line clang-include gcc-include ruby-Test::Unit gnu lcc makepp mips-1 mips-2 msft omake oracle perl php rxp sparc-pascal-file sparc-pascal-line sparc-pascal-example sun sun-ada watcom 4bsd gcov-file gcov-header gcov-nomark gcov-called-line gcov-never-called perl--Pod::Checker perl--Test perl--Test2 perl--Test::Harness weblint guile-file guile-line)))
+ '(custom-safe-themes
+   (quote
+    ("dc9a8d70c4f94a28aafc7833f8d05667601968e6c9bf998791c39fcb3e4679c9" "125fd2180e880802ae98b85f282b17f0aa8fa6cb9fc4f33d7fb19a38c40acef0" default)))
+ '(google-lsp-kythe-server "/google/data/ro/teams/grok/tools/kythe_languageserver")
+ '(package-selected-packages
+   (quote
+    (ido-competing-read+ use-package solarized-theme smex rainbow-delimiters projectile pdf-tools paredit neotree multiple-cursors multi-term markdown-mode magit ledger-mode ido-vertical-mode ido-ubiquitous gruvbox-theme god-mode go-mode ghc ggtags flycheck flx-ido expand-region evil emms eclim doom-themes diminish company-web company-auctex clang-format ace-window))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
